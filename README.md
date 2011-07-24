@@ -73,4 +73,4 @@ there are a bunch of setting vars to customize behavior. each of this comes with
   * example: '` && echo "execution of my scheduled job finished"`'
 
 # license
-MIT-License, see [LICENSE](/kraiz/django-cronjobs/blob/master/LICENSE/) file.
+MIT-License, see [LICENSE](/kraiz/django-crontab/blob/master/LICENSE) file.
