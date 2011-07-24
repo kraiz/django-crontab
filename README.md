@@ -38,6 +38,13 @@ there are a bunch of setting vars to customize behavior. each of this comes with
 * CRONJOBS
   * list of tuples with cron timing and the python module path to the method
   * default: []
+  * example
+        
+            CRONJOBS = [
+                ('*/5 * * * *', 'myproject.myapp.cron.my_scheduled_job'),
+                ('0   0 1 * *', 'myproject.myapp.cron.other_scheduled_job'),
+                ('@reboot',     'myproject.anotherapp.cron.system_reboot_job'),
+            ]
 
 * CRONTAB\_EXECUTABLE
   * path to the crontab executable of your os
