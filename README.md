@@ -6,25 +6,25 @@ install via easy_install or pip
 
         easy_install django-crontab
 
-add installed apps in django settings.py
+add it to installed apps in django settings.py
 
         INSTALLED_APPS = (
             'django_crontab',
             ...
         )
 
-now create a new method that should be scheduled by cron, f.e. in `myproject/myapp/cron.py`
+now create a new method that should be executed by cron every 5 minutes, f.e. in `myproject/myapp/cron.py`
 
         def my_scheduled_job():
           pass
 
-now add this your settings.py:
+now add this to your settings.py:
 
         CRONJOBS = [
             ('*/5 * * * *', 'myproject.myapp.cron.my_scheduled_job')
         ]
 
-the least to do is to run the command to add all defined jobs from `CRONJOBS` to crontab:
+the least to do is to run this command to add all defined jobs from `CRONJOBS` to crontab (of the user which you are running this command with):
 
         python manage.py crontab add
 
@@ -33,7 +33,7 @@ removing all defined jobs is straight forward
         python manage.py crontab remove
 
 # config
-there are a bunch of setting vars to customize behavior. each of this comes with default values that should properly fit.
+there are a bunch of setting vars to customize behavior. each of this comes with default values that should properly fit. if not, feel free to overwrite.
 
 * CRONJOBS
   * list of tuples with cron timing and the python module path to the method
