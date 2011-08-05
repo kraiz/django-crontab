@@ -62,16 +62,17 @@ class Command(BaseCommand):
             self.crontab_lines.append(CRONTAB_LINE_PATTERN % {
                 'time': cronjob[0],
                 'comment': CRONTAB_COMMENT,
-                'command': '%(prefix)s %(exec)s %(manage)s crontab run %(jobname)s %(suffix)s' % {
-                    'prefix': COMMAND_PREFIX,
+                'command': '%(global_prefix)s %(exec)s %(manage)s crontab run %(jobname)s %(job_suffix)s %(global_suffix)s' % {
+                    'global_prefix': COMMAND_PREFIX,
                     'exec': PYTHON_EXECUTABLE,
                     'manage': DJANGO_MANAGE_PATH,
                     'jobname': cronjob[1],
-                    'suffix': COMMAND_SUFFIX
+                    'job_suffix': cronjob[2] if len(cronjob) > 2 else '',
+                    'global_suffix': COMMAND_SUFFIX
                 }
             })
             if options.get('verbosity') == '1':
-                print '  adding cronjob: %s -> %s' % cronjob
+                print '  adding cronjob: %s -> %s' % cronjob[:2]
             elif options.get('verbosity') == '2':
                 print 'adding cronjob: %s' % self.crontab_lines[-1],
 
@@ -92,8 +93,8 @@ class Command(BaseCommand):
         """executes the corresponding function defined in CRONJOBS"""
         for cronjob in CRONJOBS:
             if cronjob[1] == function:
-                module_path = function.split('.')[:-1][0]
+                module_path, function_name = function.rsplit('.', 1)
                 module = import_module(module_path)
-                func = getattr(module, function.split('.')[-1])
+                func = getattr(module, function_name)
                 func()
 

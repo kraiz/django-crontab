@@ -36,14 +36,14 @@ removing all defined jobs is straight forward
 there are a bunch of setting vars to customize behavior. each of this comes with default values that should properly fit. if not, feel free to overwrite.
 
 * CRONJOBS
-  * list of tuples with cron timing and the python module path to the method
+  * list of tuples with cron timing, the python module path to the method and optional a job specific suffix (f.e. to redirect out/err to a file)
   * default: []
   * example
         
             CRONJOBS = [
                 ('*/5 * * * *', 'myproject.myapp.cron.my_scheduled_job'),
                 ('0   0 1 * *', 'myproject.myapp.cron.other_scheduled_job'),
-                ('@reboot',     'myproject.anotherapp.cron.system_reboot_job'),
+                ('@reboot',     'myproject.anotherapp.cron.system_reboot_job', '>> /home/john/web/logs/system_reboot_job.log'),
             ]
 
 * CRONTAB\_EXECUTABLE
@@ -51,7 +51,7 @@ there are a bunch of setting vars to customize behavior. each of this comes with
   * default: '/usr/bin/crontab'
 
 * CRONTAB\_DJANGO\_PROJECT\_NAME
-  * the name of your django project, used to build path path to manage.py
+  * the name of your django project, used to build path path to manage.py and to mark the jobs in contrab via comment for later removing
   * default is read from DJANGO_SETTINGS_MODULE environment variable 
 
 * CRONTAB\_DJANGO\_MANAGE\_PATH
