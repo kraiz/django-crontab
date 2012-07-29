@@ -1,0 +1,11 @@
+0.4
+------
+* bugfix: crash related to Django 1.4 and move of manage.py
+
+0.3
+------
+* new feature: added support for command pre- and suffixes (f.e. pipe stout/stderr into logfile)
+
+0.2
+------
+* first public release
