@@ -55,12 +55,12 @@ there are a bunch of setting vars to customize behavior. each of this comes with
   * default is read from DJANGO_SETTINGS_MODULE environment variable 
 
 * CRONTAB\_DJANGO\_MANAGE\_PATH
-  * path to manage.py file
+  * path to manage.py file (including the manage.py itself, i.e. '/home/john/web/manage.py')
   * default is build using DJANGO\_PROJECT\_NAME
 
 * CRONTAB\_PYTHON\_EXECUTABLE
   * path to the python interpreter executable used to run the scheduled job
-  * default uses the interpreter executable used to `add` the jobs
+  * default uses the interpreter executable used to `add` the jobs (via 'python manage.py crontab add')
 
 * CRONTAB\_COMMAND\_PREFIX
   * something you wanne do before job gets executed.
