@@ -79,7 +79,7 @@ class Command(BaseCommand):
 
     def __remove_cronjobs(self, *args, **options):
         """removes all jobs defined in CRONJOBS setting from internal buffer"""
-        for line in self.crontab_lines:
+        for line in self.crontab_lines[:]:
             job = CRONTAB_LINE_REGEXP.findall(line)
             if job and job[0][4] == CRONTAB_COMMENT:
                 self.crontab_lines.remove(line)
