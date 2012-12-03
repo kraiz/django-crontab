@@ -1,3 +1,7 @@
+upcoming
+------
+* bugfix: list modification while iterating d77a48a (thx meric426)
+
 0.4
 ------
 * bugfix: crash related to Django 1.4 and move of manage.py
