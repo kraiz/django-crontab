@@ -72,5 +72,9 @@ there are a bunch of setting vars to customize behavior. each of this comes with
   * default: '' (empty string) 
   * example: '` && echo "execution of my scheduled job finished"`'
 
+* CRONTAB\_COMMENT
+  * used for marking the added contab-lines for removing, default value includes project name to distinguish multiple projects on the same host and user
+  * default: 'django-crontabs for <CRONTAB\_DJANGO\_PROJECT\_NAME>'
+
 # license
 MIT-License, see [LICENSE](/kraiz/django-crontab/blob/master/LICENSE) file.
