@@ -33,7 +33,7 @@ else:
 
 PYTHON_EXECUTABLE = getattr(settings, 'CRONTAB_PYTHON_EXECUTABLE', sys.executable)
 
-CRONTAB_COMMENT = 'django-cronjobs for %s' % DJANGO_PROJECT_NAME
+CRONTAB_COMMENT = getattr(settings, 'CRONTAB_COMMENT', 'django-cronjobs for %s' % DJANGO_PROJECT_NAME)
 
 COMMAND_PREFIX = getattr(settings, 'CRONTAB_COMMAND_PREFIX', '')
 COMMAND_SUFFIX = getattr(settings, 'CRONTAB_COMMAND_SUFFIX', '')
