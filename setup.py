@@ -9,6 +9,7 @@ setup(
     author_email='der.kraiz@gmail.com',
     license='MIT',
     url='https://github.com/kraiz/django-crontab',
+    long_description=open('README.rst').read(),
     packages=[
         'django_crontab',
         'django_crontab.management',
