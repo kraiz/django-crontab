@@ -1,6 +1,7 @@
-upcoming
+0.4.1
 ------
 * bugfix: list modification while iterating d77a48a (thx meric426)
+* feature: setting CRONTAB_COMMENT overwritable now (for arski)
 
 0.4
 ------
