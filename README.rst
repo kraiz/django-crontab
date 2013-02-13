@@ -82,4 +82,4 @@ CRONTAB_COMMENT
 
 license
 =======
-MIT-License, see [LICENSE](/kraiz/django-crontab/blob/master/LICENSE) file.
+MIT-License, see LICENSE file.
