@@ -27,13 +27,13 @@ now add this to your settings.py::
         ('*/5 * * * *', 'myproject.myapp.cron.my_scheduled_job')
     ]
 
-the least to do is to run this command to add all defined jobs from `CRONJOBS` to crontab (of the user which you are running this command with):
+the least to do is to run this command to add all defined jobs from `CRONJOBS` to crontab (of the user which you are running this command with)::
 
-        python manage.py crontab add
+    python manage.py crontab add
 
-removing all defined jobs is straight forward
+removing all defined jobs is straight forward::
 
-        python manage.py crontab remove
+    python manage.py crontab remove
 
 config
 ======
@@ -43,12 +43,12 @@ CRONJOBS
   - list of tuples with cron timing, the python module path to the method and optional a job specific suffix (f.e. to redirect out/err to a file)
   - default: []
   - example::
-        
-    CRONJOBS = [
-        ('*/5 * * * *', 'myproject.myapp.cron.my_scheduled_job'),
-        ('0   0 1 * *', 'myproject.myapp.cron.other_scheduled_job'),
-        ('@reboot',     'myproject.anotherapp.cron.system_reboot_job', '>> /home/john/web/logs/system_reboot_job.log'),
-    ]
+
+            CRONJOBS = [
+                ('*/5 * * * *', 'myproject.myapp.cron.my_scheduled_job'),
+                ('0   0 1 * *', 'myproject.myapp.cron.other_scheduled_job'),
+                ('@reboot',     'myproject.anotherapp.cron.system_reboot_job', '>> /home/john/web/logs/system_reboot_job.log'),
+            ]
 
 CRONTAB_EXECUTABLE
   - path to the crontab executable of your os
