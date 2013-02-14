@@ -1,5 +1,10 @@
 0.4.1
 ------
+* changed README from markdown to restructuredtext
+* fixed a crappy distribution error with README
+
+0.4.1 - broken!
+------
 * bugfix: list modification while iterating d77a48a (thx meric426)
 * feature: setting CRONTAB_COMMENT overwritable now (for arski)
 
