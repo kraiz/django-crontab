@@ -1,4 +1,8 @@
-0.4.1
+0.4.3
+------
+* bugfix: only replace "pyc" with "py" in file's extension (thx cinghiale)
+
+0.4.2
 ------
 * changed README from markdown to restructuredtext
 * fixed a crappy distribution error with README
