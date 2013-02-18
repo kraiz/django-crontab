@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.utils.importlib import import_module
 import os
+import os.path
 import re
 import sys
 
@@ -23,11 +24,13 @@ if hasattr(settings, 'CRONTAB_DJANGO_MANAGE_PATH'):
     if not os.path.exists(DJANGO_MANAGE_PATH):
         print 'ERROR: No manage.py file found at "%s". Check settings.CRONTAB_DJANGO_MANAGE_PATH!' % DJANGO_MANAGE_PATH
 else:
+    def ext(fpath):
+        return os.path.splitext(fpath)[0] + '.py'
     try:  # Django 1.3
-        DJANGO_MANAGE_PATH = import_module(DJANGO_PROJECT_NAME + '.manage').__file__.replace('pyc', 'py')
+        DJANGO_MANAGE_PATH = ext(import_module(DJANGO_PROJECT_NAME + '.manage').__file__)
     except ImportError:
         try:  # Django 1.4
-            DJANGO_MANAGE_PATH = import_module('manage').__file__.replace('pyc', 'py')
+            DJANGO_MANAGE_PATH = ext(import_module('manage').__file__)
         except ImportError:
             print 'ERROR: Can\'t find your manage.py - please define settings.CRONTAB_DJANGO_MANAGE_PATH'
 
