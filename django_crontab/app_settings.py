@@ -40,3 +40,5 @@ CRONTAB_COMMENT = getattr(settings, 'CRONTAB_COMMENT', 'django-cronjobs for %s' 
 
 COMMAND_PREFIX = getattr(settings, 'CRONTAB_COMMAND_PREFIX', '')
 COMMAND_SUFFIX = getattr(settings, 'CRONTAB_COMMAND_SUFFIX', '')
+
+LOCK_JOBS = getattr(settings, 'CRONTAB_LOCK_JOBS', False)

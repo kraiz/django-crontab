@@ -98,12 +98,14 @@ class Command(BaseCommand):
         """executes the corresponding function defined in CRONJOBS"""
         for cronjob in CRONJOBS:
             if cronjob[1] == function:
-                f = open(function, 'w')
-                try:
-                    fcntl.lockf(f, fcntl.LOCK_EX | fcntl.LOCK_NB)
-                except:
-                    logger.warning('Tried to start cron job at %s that is already running.', function)
-                    continue
+                if LOCK_JOBS:
+                    f = open(function, 'w')
+                    try:
+                        fcntl.lockf(f, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                    except:
+                        logger.warning('Tried to start cron job at %s that is already running.', function)
+                        continue
+                
                 module_path, function_name = function.rsplit('.', 1)
                 module = import_module(module_path)
                 func = getattr(module, function_name)
