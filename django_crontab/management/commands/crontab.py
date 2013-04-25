@@ -109,5 +109,8 @@ class Command(BaseCommand):
                 module_path, function_name = function.rsplit('.', 1)
                 module = import_module(module_path)
                 func = getattr(module, function_name)
-                func()
+                try:
+                    func()
+                except:
+                    logger.exception('Failed to complete cronjob at %s', function)
 
