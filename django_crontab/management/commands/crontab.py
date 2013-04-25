@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand
 from django.utils.importlib import import_module
 from django_crontab.app_settings import CRONTAB_EXECUTABLE, CRONJOBS, \
     CRONTAB_LINE_PATTERN, CRONTAB_COMMENT, PYTHON_EXECUTABLE, DJANGO_MANAGE_PATH, \
-    CRONTAB_LINE_REGEXP, COMMAND_PREFIX, COMMAND_SUFFIX, LOCK_JOBS
+    CRONTAB_LINE_REGEXP, COMMAND_PREFIX, COMMAND_SUFFIX
 import os
 import tempfile
 
