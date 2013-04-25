@@ -3,11 +3,12 @@ from django.utils.importlib import import_module
 from django_crontab.app_settings import CRONTAB_EXECUTABLE, CRONJOBS, \
     CRONTAB_LINE_PATTERN, CRONTAB_COMMENT, PYTHON_EXECUTABLE, DJANGO_MANAGE_PATH, \
     CRONTAB_LINE_REGEXP, COMMAND_PREFIX, COMMAND_SUFFIX, LOCK_JOBS
+import fcntl
+import logging
 import os
 import tempfile
-import fcntl
 
-import logging
+
 logger = logging.getLogger(__name__)
 
 
@@ -15,7 +16,6 @@ class Command(BaseCommand):
     args = '<add|remove>'
     help = 'run this command to add or remove the jobs defined in CRONJOBS setting from/to crontab'
     crontab_lines = []
-
 
     def handle(self, *args, **options):
         """dispatches by given subcommand"""
@@ -36,7 +36,6 @@ class Command(BaseCommand):
                 return
         print help
 
-
     def __read_crontab(self, **options):
         """reads the crontab into internal buffer"""
         if options.get('verbosity') == '2':
@@ -44,7 +43,6 @@ class Command(BaseCommand):
         self.crontab_lines = os.popen('%s -l' % CRONTAB_EXECUTABLE).readlines()
         if options.get('verbosity') == '2':
             print 'done'
-
 
     def __write_crontab(self, **options):
         """writes internal buffer back to crontab"""
@@ -60,14 +58,16 @@ class Command(BaseCommand):
         if options.get('verbosity') == '2':
             print 'done'
 
-
     def __add_cronjobs(self, *args, **options):
         """adds all jobs defined in CRONJOBS setting to internal buffer"""
         for cronjob in CRONJOBS:
             self.crontab_lines.append(CRONTAB_LINE_PATTERN % {
                 'time': cronjob[0],
                 'comment': CRONTAB_COMMENT,
-                'command': '%(global_prefix)s %(exec)s %(manage)s crontab run %(jobname)s %(job_suffix)s %(global_suffix)s' % {
+                'command': (
+                    '%(global_prefix)s %(exec)s %(manage)s crontab run '
+                    '%(jobname)s %(job_suffix)s %(global_suffix)s'
+                ) % {
                     'global_prefix': COMMAND_PREFIX,
                     'exec': PYTHON_EXECUTABLE,
                     'manage': DJANGO_MANAGE_PATH,
@@ -81,7 +81,6 @@ class Command(BaseCommand):
             elif options.get('verbosity') == '2':
                 print 'adding cronjob: %s' % self.crontab_lines[-1],
 
-
     def __remove_cronjobs(self, *args, **options):
         """removes all jobs defined in CRONJOBS setting from internal buffer"""
         for line in self.crontab_lines[:]:
@@ -92,7 +91,6 @@ class Command(BaseCommand):
                     print 'removing cronjob: %s -> %s' % (job[0][0].strip(), job[0][2][job[0][2].find('run') + 4:].split()[0])
                 elif options.get('verbosity') == '2':
                     print 'removing cronjob: %s ' % line,
-
 
     def __run_cronjob(self, function):
         """executes the corresponding function defined in CRONJOBS"""
@@ -110,4 +108,3 @@ class Command(BaseCommand):
                 module = import_module(module_path)
                 func = getattr(module, function_name)
                 func()
-
