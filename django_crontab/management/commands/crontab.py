@@ -103,8 +103,12 @@ class Command(BaseCommand):
                     except:
                         logger.warning('Tried to start cron job at %s that is already running.', function)
                         continue
-                
+                        
                 module_path, function_name = function.rsplit('.', 1)
                 module = import_module(module_path)
                 func = getattr(module, function_name)
-                func()
+                try:
+                    func()
+                except Exception, exc:
+                    logger.exception('Failed to complete cronjob at %s' % function, exc)
+
