@@ -6,6 +6,9 @@ from django_crontab.app_settings import CRONTAB_EXECUTABLE, CRONJOBS, \
 import os
 import tempfile
 
+import logging
+logger = logging.getLogger(__name__)
+
 class Command(BaseCommand):
     args = '<add|remove>'
     help = 'run this command to add or remove the jobs defined in CRONJOBS setting from/to crontab'
@@ -96,5 +99,8 @@ class Command(BaseCommand):
                 module_path, function_name = function.rsplit('.', 1)
                 module = import_module(module_path)
                 func = getattr(module, function_name)
-                func()
+                try:
+                    func()
+                except:
+                    logger.exception('Failed to complete cronjob at %s', function)
 
