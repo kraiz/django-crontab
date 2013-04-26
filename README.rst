@@ -55,6 +55,7 @@ CRONJOBS
     4. optional: dict of keyword arguments for the method (default: {})
     5. optional: a job specific suffix (f.e. to redirect out/err to a file, default: '')
 
+  - NOTE: Run "python manage.py crontab add" each time you change CRONJOBS in any way!
   - default: []
   - example::
 
