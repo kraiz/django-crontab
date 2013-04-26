@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 from setuptools import setup
 
+
 setup(
     name='django-crontab',
     description='dead simple crontab powered job scheduling for django',
-    version='0.4.3',
+    version='0.5.0',
     author='Lars Kreisz',
     author_email='der.kraiz@gmail.com',
     license='MIT',
@@ -14,8 +15,11 @@ setup(
         'django_crontab',
         'django_crontab.management',
         'django_crontab.management.commands'],
+    requires=[
+        'Django'
+    ],
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Environment :: Web Environment',
         'Framework :: Django',
         'Intended Audience :: Developers',

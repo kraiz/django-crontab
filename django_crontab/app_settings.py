@@ -1,7 +1,6 @@
 from django.conf import settings
 from django.utils.importlib import import_module
 import os
-import os.path
 import re
 import sys
 
@@ -29,7 +28,7 @@ else:
     try:  # Django 1.3
         DJANGO_MANAGE_PATH = ext(import_module(DJANGO_PROJECT_NAME + '.manage').__file__)
     except ImportError:
-        try:  # Django 1.4
+        try:  # Django 1.4+
             DJANGO_MANAGE_PATH = ext(import_module('manage').__file__)
         except ImportError:
             print 'ERROR: Can\'t find your manage.py - please define settings.CRONTAB_DJANGO_MANAGE_PATH'
@@ -40,3 +39,5 @@ CRONTAB_COMMENT = getattr(settings, 'CRONTAB_COMMENT', 'django-cronjobs for %s' 
 
 COMMAND_PREFIX = getattr(settings, 'CRONTAB_COMMAND_PREFIX', '')
 COMMAND_SUFFIX = getattr(settings, 'CRONTAB_COMMAND_SUFFIX', '')
+
+LOCK_JOBS = getattr(settings, 'CRONTAB_LOCK_JOBS', False)

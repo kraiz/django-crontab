@@ -27,7 +27,14 @@ now add this to your settings.py::
         ('*/5 * * * *', 'myproject.myapp.cron.my_scheduled_job')
     ]
 
-the least to do is to run this command to add all defined jobs from `CRONJOBS` to crontab (of the user which you are running this command with)::
+you can also define positional and keyword arguments which let you call django management commands::
+
+    CRONJOBS = [
+        ('*/5 * * * *', 'myproject.myapp.cron.other_scheduled_job', ['arg1', 'arg2'], {'verbose': 0}),
+        ('0   4 * * *', 'django.core.management.call_command', ['clearsessions']),
+    ]
+
+finally run this command to add all defined jobs from `CRONJOBS` to crontab (of the user which you are running this command with)::
 
     python manage.py crontab add
 
@@ -40,15 +47,25 @@ config
 there are a bunch of setting vars to customize behavior. each of this comes with default values that should properly fit. if not, feel free to overwrite.
 
 CRONJOBS
-  - list of tuples with cron timing, the python module path to the method and optional a job specific suffix (f.e. to redirect out/err to a file)
+  - list of jobs, each defined as tuple:
+    - required: cron timing (in usual format: http://en.wikipedia.org/wiki/Cron#Format)
+    - required: the python module path to the method
+    - optional: list of positional arguments for the method (default: [])
+    - optional: dict of keyword arguments for the method (default: {})
+    - optional: a job specific suffix (f.e. to redirect out/err to a file, default: '')
   - default: []
   - example::
 
             CRONJOBS = [
                 ('*/5 * * * *', 'myproject.myapp.cron.my_scheduled_job'),
-                ('0   0 1 * *', 'myproject.myapp.cron.other_scheduled_job'),
-                ('@reboot',     'myproject.anotherapp.cron.system_reboot_job', '>> /home/john/web/logs/system_reboot_job.log'),
+                ('0   0 1 * *', 'myproject.myapp.cron.other_scheduled_job', []),
+                ('0   0 * * 0', 'django.core.management.call_command', ['dumpdata', 'auth'], {'indent': 4}, '> /home/john/backups/last_sunday_auth_backup.json'),
             ]
+
+CRONTAB_LOCK_JOBS
+  - prevent starting a job if an old instance of the same job is still running
+  - default: False
+  - since 0.5.0
 
 CRONTAB_EXECUTABLE
   - path to the crontab executable of your os
@@ -67,18 +84,22 @@ CRONTAB_PYTHON_EXECUTABLE
   - default uses the interpreter executable used to `add` the jobs (via 'python manage.py crontab add')
 
 CRONTAB_COMMAND_PREFIX
-  - something you wanne do before job gets executed.
+  - something you wanne do or declare before each job gets executed. A good point for environment variables.
   - default: '' (empty string)
-  - example: '`echo "executing my scheduled job now" && `'
+  - example: 'STAGE=production'
 
 CRONTAB_COMMAND_SUFFIX
-  - something you wanne do after job was executed.
+  - something you wanne do after each job was executed.
   - default: '' (empty string)
-  - example: '` && echo "execution of my scheduled job finished"`'
+  - example: (do you know a good example?)
 
 CRONTAB_COMMENT
   - used for marking the added contab-lines for removing, default value includes project name to distinguish multiple projects on the same host and user
   - default: 'django-crontabs for ' + CRONTAB_DJANGO_PROJECT_NAME
+
+contributors
+=======
+arski cinghiale meric426
 
 license
 =======
