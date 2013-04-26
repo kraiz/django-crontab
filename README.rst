@@ -48,19 +48,21 @@ there are a bunch of setting vars to customize behavior. each of this comes with
 
 CRONJOBS
   - list of jobs, each defined as tuple:
-    - required: cron timing (in usual format: http://en.wikipedia.org/wiki/Cron#Format)
-    - required: the python module path to the method
-    - optional: list of positional arguments for the method (default: [])
-    - optional: dict of keyword arguments for the method (default: {})
-    - optional: a job specific suffix (f.e. to redirect out/err to a file, default: '')
+
+    1. required: cron timing (in usual format: http://en.wikipedia.org/wiki/Cron#Format)
+    2. required: the python module path to the method
+    3. optional: list of positional arguments for the method (default: [])
+    4. optional: dict of keyword arguments for the method (default: {})
+    5. optional: a job specific suffix (f.e. to redirect out/err to a file, default: '')
+
   - default: []
   - example::
 
-            CRONJOBS = [
-                ('*/5 * * * *', 'myproject.myapp.cron.my_scheduled_job'),
-                ('0   0 1 * *', 'myproject.myapp.cron.other_scheduled_job', []),
-                ('0   0 * * 0', 'django.core.management.call_command', ['dumpdata', 'auth'], {'indent': 4}, '> /home/john/backups/last_sunday_auth_backup.json'),
-            ]
+        CRONJOBS = [
+            ('*/5 * * * *', 'myproject.myapp.cron.my_scheduled_job'),
+            ('0   0 1 * *', 'myproject.myapp.cron.other_scheduled_job', []),
+            ('0   0 * * 0', 'django.core.management.call_command', ['dumpdata', 'auth'], {'indent': 4}, '> /home/john/backups/last_sunday_auth_backup.json'),
+        ]
 
 CRONTAB_LOCK_JOBS
   - prevent starting a job if an old instance of the same job is still running
