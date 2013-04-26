@@ -5,9 +5,9 @@ dead simple crontab powered job scheduling for django.
 
 setup
 =====
-install via easy_install or pip::
+install via pip::
 
-    easy_install django-crontab
+    pip install django-crontab
 
 add it to installed apps in django settings.py::
 
