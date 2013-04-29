@@ -63,6 +63,15 @@ class Command(BaseCommand):
     def __add_cronjobs(self, *args, **options):
         """adds all jobs defined in CRONJOBS setting to internal buffer"""
         for job in CRONJOBS:
+            # differ format and find job's suffix
+            if len(job) > 2 and isinstance(job[2], (basestring, unicode)):
+                # format 1 job
+                job_suffix = job[2]
+            elif len(job) > 4:
+                job_suffix = job[4]
+            else:
+                job_suffix = ''
+
             self.crontab_lines.append(CRONTAB_LINE_PATTERN % {
                 'time': job[0],
                 'comment': CRONTAB_COMMENT,
@@ -74,12 +83,12 @@ class Command(BaseCommand):
                     'exec': PYTHON_EXECUTABLE,
                     'manage': DJANGO_MANAGE_PATH,
                     'jobname': self.__hash_job(job),
-                    'job_suffix': job[4] if len(job) > 4 else '',
+                    'job_suffix': job_suffix,
                     'global_suffix': COMMAND_SUFFIX
                 }
             })
             if options.get('verbosity') >= '1':
-                print '  adding cronjob: ', job
+                print '  adding cronjob: (%s) -> %s' % (self.__hash_job(job), job)
 
     def __remove_cronjobs(self, *args, **options):
         """removes all jobs defined in CRONJOBS setting from internal buffer"""
@@ -88,7 +97,10 @@ class Command(BaseCommand):
             if job and job[0][4] == CRONTAB_COMMENT:
                 self.crontab_lines.remove(line)
                 if options.get('verbosity') >= '1':
-                    print 'removing cronjob: ', self.__get_job_by_hash(job[0][2][job[0][2].find('run') + 4:].split()[0])
+                    print 'removing cronjob: (%s) -> %s' % (
+                        job[0][2].split()[4],
+                        self.__get_job_by_hash(job[0][2][job[0][2].find('run') + 4:].split()[0])
+                    )
 
     def __hash_job(self, job):
         """build a md5 hash representing the job"""
