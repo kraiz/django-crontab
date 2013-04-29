@@ -1,3 +1,7 @@
+0.5.1
+------
+* bugfix: added 2 formats for jobs to keep backward compatiblity with 0.4.x
+
 0.5.0
 ------
 * feature: positional and keyword arguments for job functions as third and fourth job tuple element. this enables django
