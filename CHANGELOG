@@ -1,3 +1,7 @@
+upcoming
+------
+* feature: the subcommand "show" will list the currently active jobs from crontab
+
 0.5.1
 ------
 * bugfix: added 2 formats for jobs to keep backward compatiblity with 0.4.x

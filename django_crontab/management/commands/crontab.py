@@ -15,8 +15,8 @@ logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
-    args = '<add|remove>'
-    help = 'run this command to add or remove the jobs defined in CRONJOBS setting from/to crontab'
+    args = '<add|show|remove>'
+    help = 'run this command to add, show or remove the jobs defined in CRONJOBS setting from/to crontab'
     crontab_lines = []
 
     def handle(self, *args, **options):
@@ -27,6 +27,10 @@ class Command(BaseCommand):
                 self.__remove_cronjobs(*args, **options)
                 self.__add_cronjobs(*args, **options)
                 self.__write_crontab(**options)
+                return
+            elif args[0] == 'show':
+                self.__read_crontab(**options)
+                self.__show_cronjobs(*args, **options)
                 return
             elif args[0] == 'remove':
                 self.__read_crontab(**options)
@@ -89,6 +93,18 @@ class Command(BaseCommand):
             })
             if options.get('verbosity') >= '1':
                 print '  adding cronjob: (%s) -> %s' % (self.__hash_job(job), job)
+
+    def __show_cronjobs(self, *args, **options):
+        """print the jobs from from crontab"""
+        print "Currently active jobs in crontab:"
+        for line in self.crontab_lines[:]:
+            job = CRONTAB_LINE_REGEXP.findall(line)
+            if job and job[0][4] == CRONTAB_COMMENT:
+                if options.get('verbosity') >= '1':
+                    print '%s -> %s' % (
+                        job[0][2].split()[4],
+                        self.__get_job_by_hash(job[0][2][job[0][2].find('run') + 4:].split()[0])
+                    )
 
     def __remove_cronjobs(self, *args, **options):
         """removes all jobs defined in CRONJOBS setting from internal buffer"""
