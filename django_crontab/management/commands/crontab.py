@@ -9,14 +9,16 @@ import json
 import logging
 import os
 import tempfile
+import subprocess
+import re
 
 
 logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
-    args = '<add|show|remove>'
-    help = 'run this command to add, show or remove the jobs defined in CRONJOBS setting from/to crontab'
+    args = '<add|show|running|remove>'
+    help = 'run this command to add, show (running) or remove the jobs defined in CRONJOBS setting from/to crontab'
     crontab_lines = []
 
     def handle(self, *args, **options):
@@ -31,6 +33,10 @@ class Command(BaseCommand):
             elif args[0] == 'show':
                 self.__read_crontab(**options)
                 self.__show_cronjobs(*args, **options)
+                return
+            elif args[0] == 'running':
+                self.__read_crontab(**options)
+                self.__running_cronjobs(*args, **options)
                 return
             elif args[0] == 'remove':
                 self.__read_crontab(**options)
@@ -95,7 +101,7 @@ class Command(BaseCommand):
                 print '  adding cronjob: (%s) -> %s' % (self.__hash_job(job), job)
 
     def __show_cronjobs(self, *args, **options):
-        """print the jobs from from crontab"""
+        """print the jobs from crontab"""
         print "Currently active jobs in crontab:"
         for line in self.crontab_lines[:]:
             job = CRONTAB_LINE_REGEXP.findall(line)
@@ -105,6 +111,22 @@ class Command(BaseCommand):
                         job[0][2].split()[4],
                         self.__get_job_by_hash(job[0][2][job[0][2].find('run') + 4:].split()[0])
                     )
+    
+    def __running_cronjobs(self, *args, **options):
+        """print the running jobs from crontab"""
+        print "Currently running jobs from crontab:"
+        for line in self.crontab_lines[:]:
+            job = CRONTAB_LINE_REGEXP.findall(line)
+            if job and job[0][4] == CRONTAB_COMMENT:
+                if options.get('verbosity') >= '1':
+                    ps = subprocess.check_output(['ps', '-eo', 'pid,cmd']).strip().split('\n')
+                    for p in ps[1:]:
+                        pid, cmd = p.split(' ', 1)
+                        if re.match(PYTHON_EXECUTABLE+'.*'+job[0][2].split()[4]+'$', cmd):
+                            print '%s\n%s' % (
+                                self.__get_job_by_hash(job[0][2][job[0][2].find('run') + 4:].split()[0]),
+                                subprocess.check_output(['ps', '-fp', pid]).strip()
+                            )
 
     def __remove_cronjobs(self, *args, **options):
         """removes all jobs defined in CRONJOBS setting from internal buffer"""
