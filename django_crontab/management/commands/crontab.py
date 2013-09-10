@@ -29,5 +29,3 @@ class Command(BaseCommand):
                 Crontab().run(args[1])
                 return
         print help
-
-
