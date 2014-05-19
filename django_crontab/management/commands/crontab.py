@@ -2,7 +2,8 @@ from django.core.management.base import BaseCommand
 from django.utils.importlib import import_module
 from django_crontab.app_settings import CRONTAB_EXECUTABLE, CRONJOBS, \
     CRONTAB_LINE_PATTERN, CRONTAB_COMMENT, PYTHON_EXECUTABLE, DJANGO_MANAGE_PATH, \
-    CRONTAB_LINE_REGEXP, COMMAND_PREFIX, COMMAND_SUFFIX, LOCK_JOBS
+    CRONTAB_LINE_REGEXP, COMMAND_PREFIX, COMMAND_SUFFIX, LOCK_JOBS, CRONTAB_MAILTO, \
+    CRONTAB_MAILTO_REGEXP
 import fcntl
 import hashlib
 import json
@@ -65,6 +66,9 @@ class Command(BaseCommand):
             print 'done'
 
     def __add_cronjobs(self, *args, **options):
+        """adds the MAILTO setting first of all"""
+        if CRONTAB_MAILTO:
+            self.crontab_lines.append('MAILTO=%s\n' % CRONTAB_MAILTO)
         """adds all jobs defined in CRONJOBS setting to internal buffer"""
         for job in CRONJOBS:
             # differ format and find job's suffix
@@ -117,6 +121,8 @@ class Command(BaseCommand):
                         job[0][2].split()[4],
                         self.__get_job_by_hash(job[0][2][job[0][2].find('run') + 4:].split()[0])
                     )
+            if CRONTAB_MAILTO_REGEXP.match(line):
+                self.crontab_lines.remove(line)
 
     def __hash_job(self, job):
         """build a md5 hash representing the job"""
