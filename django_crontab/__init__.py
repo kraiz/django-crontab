@@ -1,13 +1,16 @@
-from django.utils.importlib import import_module
-from django_crontab.app_settings import CRONTAB_EXECUTABLE, CRONJOBS, \
-    CRONTAB_LINE_PATTERN, CRONTAB_COMMENT, PYTHON_EXECUTABLE, DJANGO_MANAGE_PATH, \
-    CRONTAB_LINE_REGEXP, COMMAND_PREFIX, COMMAND_SUFFIX, LOCK_JOBS
+from __future__ import print_function
+
 import fcntl
 import hashlib
 import json
 import logging
 import os
 import tempfile
+
+from django.utils.importlib import import_module
+from django_crontab.app_settings import CRONTAB_EXECUTABLE, CRONJOBS, \
+    CRONTAB_LINE_PATTERN, CRONTAB_COMMENT, PYTHON_EXECUTABLE, DJANGO_MANAGE_PATH, \
+    CRONTAB_LINE_REGEXP, COMMAND_PREFIX, COMMAND_SUFFIX, LOCK_JOBS
 
 logger = logging.getLogger(__name__)
 
@@ -81,21 +84,21 @@ class Crontab(object):
                 }
             })
             if self.verbosity >= 1:
-                print '  adding cronjob: (%s) -> %s' % (self.__hash_job(job), job)
+                print('  adding cronjob: (%s) -> %s' % (self.__hash_job(job), job))
 
     def show_jobs(self):
         """
         Print the jobs from from crontab
         """
-        print "Currently active jobs in crontab:"
+        print("Currently active jobs in crontab:")
         for line in self.crontab_lines[:]:
             job = CRONTAB_LINE_REGEXP.findall(line)
             if job and job[0][4] == CRONTAB_COMMENT:
                 if self.verbosity >= 1:
-                    print '%s -> %s' % (
+                    print('%s -> %s' % (
                         job[0][2].split()[4],
                         self.__get_job_by_hash(job[0][2][job[0][2].find('run') + 4:].split()[0])
-                    )
+                    ))
 
     def remove_jobs(self):
         """
@@ -106,10 +109,10 @@ class Crontab(object):
             if job and job[0][4] == CRONTAB_COMMENT:
                 self.crontab_lines.remove(line)
                 if self.verbosity >= 1:
-                    print 'removing cronjob: (%s) -> %s' % (
+                    print('removing cronjob: (%s) -> %s' % (
                         job[0][2].split()[4],
                         self.__get_job_by_hash(job[0][2][job[0][2].find('run') + 4:].split()[0])
-                    )
+                    ))
 
     def hash_job(self, job):
         """
