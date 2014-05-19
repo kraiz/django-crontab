@@ -42,6 +42,5 @@ COMMAND_SUFFIX = getattr(settings, 'CRONTAB_COMMAND_SUFFIX', '')
 
 LOCK_JOBS = getattr(settings, 'CRONTAB_LOCK_JOBS', False)
 
-CRONTAB_MAILTO = getattr(settings, 'CRONTAB_MAILTO', False)
-if CRONTAB_MAILTO:
-    CRONTAB_MAILTO_REGEXP = re.compile(r'MAILTO=%s\s*$' % CRONTAB_MAILTO)
+CRONTAB_MAILTO = getattr(settings, 'CRONTAB_MAILTO', '')
+CRONTAB_MAILTO_REGEXP = re.compile(r'MAILTO=%s\s*$' % CRONTAB_MAILTO)
