@@ -121,7 +121,7 @@ class Command(BaseCommand):
                         job[0][2].split()[4],
                         self.__get_job_by_hash(job[0][2][job[0][2].find('run') + 4:].split()[0])
                     )
-            if CRONTAB_MAILTO_REGEXP.findall(line):
+            if CRONTAB_MAILTO_REGEXP.match(line):
                 self.crontab_lines.remove(line)
 
     def __hash_job(self, job):
