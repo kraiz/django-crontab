@@ -29,6 +29,7 @@ class CrontabTestCase(TestCase):
     @override_settings(CRONTABS=[('*/5 * * * *', 'myproject.myapp.cron.my_scheduled_job')])
     def test_single_format_1(self):
         self.assertTrue(True)
+        print(self._read_crontab())
         call_command('crontab', ['add'])
         print(self._read_crontab())
         self.assertTrue(True)
