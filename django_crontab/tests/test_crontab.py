@@ -1,35 +1,35 @@
 from __future__ import print_function
 
-import os
-import subprocess
+from mock import Mock, patch
 
-from django.core.management import call_command
+from StringIO import StringIO
+
+from django.conf import settings
 from django.test import TestCase
 from django.test.utils import override_settings
 
 import django_crontab
 
 
-DEV_NULL = open(os.devnull, 'w')
-
-
 class CrontabTestCase(TestCase):
 
-    def setUp(self):
-        """Be sure crontab is empty"""
-        subprocess.Popen([django_crontab.app_settings.CRONTAB_EXECUTABLE, '-r'], stderr=DEV_NULL).communicate()
+    @patch('os.popen')
+    def test_read_crontab(self, mock_popen):
+        """Test reading from the crontab."""
+        mock_popen.return_value = Mock(
+            stdout = StringIO(''),
+            stderr = StringIO('crontab: no crontab for <user>')
+        )
 
-    def tearDown(self):
-        """Be sure crontab is empty"""
-        self.setUp()
+        crontab = django_crontab.Crontab()
+        crontab.read()
 
-    def _read_crontab(self):
-        return os.popen('%s -l' % django_crontab.app_settings.CRONTAB_EXECUTABLE).readlines()
+        mock_popen.assert_called_with('/usr/bin/crontab -l')
 
-    @override_settings(CRONTABS=[('*/5 * * * *', 'myproject.myapp.cron.my_scheduled_job')])
-    def test_single_format_1(self):
-        self.assertTrue(True)
-        print(self._read_crontab())
-        call_command('crontab', ['add'])
-        print(self._read_crontab())
-        self.assertTrue(True)
+    @override_settings(CRONJOBS=[('*/5 * * * *', 'myproject.myapp.cron.my_scheduled_job')])
+    def test_add_jobs(self):
+        crontab = django_crontab.Crontab()
+        crontab.add_jobs()
+
+        expected_crontab = ['*/5 * * * *  /usr/bin/python ' + settings.CRONTAB_DJANGO_MANAGE_PATH + ' crontab run eb868be6b69c31faa6b03a4cf0dd3d8c   # django-cronjobs for django_crontab\n']
+        self.assertEqual(expected_crontab, crontab.crontab_lines)

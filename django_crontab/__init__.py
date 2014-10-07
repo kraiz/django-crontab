@@ -7,10 +7,11 @@ import logging
 import os
 import tempfile
 
+from django.conf import settings
+
 from django.utils.importlib import import_module
-from django_crontab.app_settings import CRONTAB_EXECUTABLE, CRONJOBS, \
-    CRONTAB_LINE_PATTERN, CRONTAB_COMMENT, PYTHON_EXECUTABLE, DJANGO_MANAGE_PATH, \
-    CRONTAB_LINE_REGEXP, COMMAND_PREFIX, COMMAND_SUFFIX, LOCK_JOBS
+
+from django_crontab.app_settings import Settings
 
 logger = logging.getLogger(__name__)
 
@@ -20,7 +21,8 @@ class Crontab(object):
     def __init__(self, **options):
         self.verbosity = options.get('verbosity', 1)
         self.readonly = options.get('readonly', False)
-        self.crontab_lines = ''
+        self.crontab_lines = []
+        self.settings = Settings(settings)
 
     def __enter__(self):
         """
@@ -40,7 +42,7 @@ class Crontab(object):
         """
         Reads the crontab into internal buffer
         """
-        self.crontab_lines = os.popen('%s -l' % CRONTAB_EXECUTABLE).readlines()
+        self.crontab_lines = os.popen('%s -l' % self.settings.CRONTAB_EXECUTABLE).readlines()
 
     def write(self):
         """
@@ -51,14 +53,15 @@ class Crontab(object):
         for line in self.crontab_lines:
             tmp.write(line)
         tmp.close()
-        os.system('%s %s' % (CRONTAB_EXECUTABLE, path))
+        os.system('%s %s' % (self.settings.CRONTAB_EXECUTABLE, path))
         os.unlink(path)
 
     def add_jobs(self):
         """
         Adds all jobs defined in CRONJOBS setting to internal buffer
         """
-        for job in CRONJOBS:
+        print(self.settings.CRONJOBS)
+        for job in self.settings.CRONJOBS:
             # differ format and find job's suffix
             if len(job) > 2 and isinstance(job[2], (basestring, unicode)):
                 # format 1 job
@@ -68,19 +71,19 @@ class Crontab(object):
             else:
                 job_suffix = ''
 
-            self.crontab_lines.append(CRONTAB_LINE_PATTERN % {
+            self.crontab_lines.append(self.settings.CRONTAB_LINE_PATTERN % {
                 'time': job[0],
-                'comment': CRONTAB_COMMENT,
+                'comment': self.settings.CRONTAB_COMMENT,
                 'command': (
                     '%(global_prefix)s %(exec)s %(manage)s crontab run '
                     '%(jobname)s %(job_suffix)s %(global_suffix)s'
                 ) % {
-                    'global_prefix': COMMAND_PREFIX,
-                    'exec': PYTHON_EXECUTABLE,
-                    'manage': DJANGO_MANAGE_PATH,
+                    'global_prefix': self.settings.COMMAND_PREFIX,
+                    'exec': self.settings.PYTHON_EXECUTABLE,
+                    'manage': self.settings.DJANGO_MANAGE_PATH,
                     'jobname': self.__hash_job(job),
                     'job_suffix': job_suffix,
-                    'global_suffix': COMMAND_SUFFIX
+                    'global_suffix': self.settings.COMMAND_SUFFIX
                 }
             })
             if self.verbosity >= 1:
@@ -92,8 +95,8 @@ class Crontab(object):
         """
         print("Currently active jobs in crontab:")
         for line in self.crontab_lines[:]:
-            job = CRONTAB_LINE_REGEXP.findall(line)
-            if job and job[0][4] == CRONTAB_COMMENT:
+            job = self.settings.CRONTAB_LINE_REGEXP.findall(line)
+            if job and job[0][4] == self.settings.CRONTAB_COMMENT:
                 if self.verbosity >= 1:
                     print('%s -> %s' % (
                         job[0][2].split()[4],
@@ -105,8 +108,8 @@ class Crontab(object):
         Removes all jobs defined in CRONJOBS setting from internal buffer
         """
         for line in self.crontab_lines[:]:
-            job = CRONTAB_LINE_REGEXP.findall(line)
-            if job and job[0][4] == CRONTAB_COMMENT:
+            job = self.settings.CRONTAB_LINE_REGEXP.findall(line)
+            if job and job[0][4] == self.settings.CRONTAB_COMMENT:
                 self.crontab_lines.remove(line)
                 if self.verbosity >= 1:
                     print('removing cronjob: (%s) -> %s' % (
@@ -114,7 +117,7 @@ class Crontab(object):
                         self.__get_job_by_hash(job[0][2][job[0][2].find('run') + 4:].split()[0])
                     ))
 
-    def hash_job(self, job):
+    def __hash_job(self, job):
         """
         Builds an md5 hash representing the job
         """
@@ -124,7 +127,7 @@ class Crontab(object):
         """
         Finds the job by given hash
         """
-        for job in CRONJOBS:
+        for job in self.settings.CRONJOBS:
             if self.__hash_job(job) == job_hash:
                 return job
         return None
@@ -140,7 +143,7 @@ class Crontab(object):
         job_kwargs = job[3] if len(job) > 3 else {}
 
         lock_file_name = None
-        if LOCK_JOBS:
+        if self.settings.LOCK_JOBS:
             lock_file = open(os.path.join(tempfile.gettempdir(), 'django_crontab_%s.lock' % job_hash), 'w')
             lock_file_name = lock_file.name
             try:
@@ -157,7 +160,7 @@ class Crontab(object):
         except:
             logger.exception('Failed to complete cronjob at %s', job)
 
-        if LOCK_JOBS:
+        if self.settings.LOCK_JOBS:
             try:
                 os.remove(lock_file_name)
             except:
