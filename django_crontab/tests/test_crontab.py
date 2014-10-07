@@ -8,7 +8,7 @@ from django.conf import settings
 from django.test import TestCase
 from django.test.utils import override_settings
 
-import django_crontab
+from django_crontab.crontab import Crontab
 
 
 class CrontabTestCase(TestCase):
@@ -21,14 +21,14 @@ class CrontabTestCase(TestCase):
             stderr = StringIO('crontab: no crontab for <user>')
         )
 
-        crontab = django_crontab.Crontab()
+        crontab = Crontab()
         crontab.read()
 
         mock_popen.assert_called_with('/usr/bin/crontab -l')
 
     @override_settings(CRONJOBS=[('*/5 * * * *', 'myproject.myapp.cron.my_scheduled_job')])
     def test_add_jobs(self):
-        crontab = django_crontab.Crontab()
+        crontab = Crontab()
         crontab.add_jobs()
 
         expected_crontab = ['*/5 * * * *  /usr/bin/python ' + settings.CRONTAB_DJANGO_MANAGE_PATH + ' crontab run eb868be6b69c31faa6b03a4cf0dd3d8c   # django-cronjobs for django_crontab\n']
