@@ -1,1 +1,1 @@
-from test_crontab import *
+from test_crontab import CrontabTestCase

@@ -17,8 +17,8 @@ class CrontabTestCase(TestCase):
     def test_read_crontab(self, mock_popen):
         """Test reading from the crontab."""
         mock_popen.return_value = Mock(
-            stdout = StringIO(''),
-            stderr = StringIO('crontab: no crontab for <user>')
+            stdout=StringIO(''),
+            stderr=StringIO('crontab: no crontab for <user>')
         )
 
         crontab = Crontab()

@@ -3,6 +3,7 @@ import os
 import re
 import sys
 
+
 class Settings():
     def __init__(self, settings):
         self.CRONJOBS = getattr(settings, 'CRONJOBS', [])
