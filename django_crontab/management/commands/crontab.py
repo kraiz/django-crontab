@@ -20,14 +20,14 @@ class Command(BaseCommand):
                     crontab.add_jobs()
                 return
             elif args[0] == 'show':
-                with Crontab(**options) as crontab:
+                with Crontab(readonly=True, **options) as crontab:
                     crontab.show_jobs()
                 return
             elif args[0] == 'remove':
-                with Crontab(readonly=True, **options) as crontab:
+                with Crontab(**options) as crontab:
                     crontab.remove_jobs()
                 return
             elif args[0] == 'run':
-                Crontab().run(args[1])
+                Crontab().run_job(args[1])
                 return
         print(help)

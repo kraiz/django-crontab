@@ -117,23 +117,8 @@ class Crontab(object):
                         self.__get_job_by_hash(job[0][2][job[0][2].find('run') + 4:].split()[0])
                     ))
 
-    def __hash_job(self, job):
-        """
-        Builds an md5 hash representing the job
-        """
-        return hashlib.md5(json.dumps(job)).hexdigest()
-
-    def get_job_by_hash(self, job_hash):
-        """
-        Finds the job by given hash
-        """
-        for job in self.settings.CRONJOBS:
-            if self.__hash_job(job) == job_hash:
-                return job
-        return None
-
     # noinspection PyBroadException
-    def __run_cronjob(self, job_hash):
+    def run_job(self, job_hash):
         """
         Executes the corresponding function defined in CRONJOBS
         """
@@ -165,3 +150,18 @@ class Crontab(object):
                 os.remove(lock_file_name)
             except:
                 logger.exception('Error deleting lockfile %s of job %s', lock_file_name, job)
+
+    def __hash_job(self, job):
+        """
+        Builds an md5 hash representing the job
+        """
+        return hashlib.md5(json.dumps(job)).hexdigest()
+
+    def __get_job_by_hash(self, job_hash):
+        """
+        Finds the job by given hash
+        """
+        for job in self.settings.CRONJOBS:
+            if self.__hash_job(job) == job_hash:
+                return job
+        return None
