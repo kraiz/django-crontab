@@ -1,10 +1,15 @@
 upcoming
+-----
+* feature: subcommand "running" that lists jobs that are being currently executed on the system
+
+0.6.0
 ------
-* feature: the subcommand "show" will list the currently active jobs from crontab
+* feature: Travis integration
 
 0.5.1
 ------
 * bugfix: added 2 formats for jobs to keep backward compatiblity with 0.4.x
+* feature: subcommand "show" that lists currently active jobs from crontab
 
 0.5.0
 ------
