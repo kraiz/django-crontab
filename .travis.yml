@@ -12,5 +12,5 @@ install:
   - pip install -e .
 script:
   - flake8 django_crontab --ignore=E501
-  - DJANGO_SETTINGS_MODULE=tests.test_settings nosetests
+  - DJANGO_SETTINGS_MODULE=tests.settings nosetests
   - coverage report
