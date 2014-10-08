@@ -12,5 +12,5 @@ install:
   - pip install -e .
 script:
   - flake8 django_crontab --ignore=E501
-  - PYTHONPATH=. coverage run --branch --source=django_crontab `which django-admin.py` test --settings="django_crontab.tests.test_settings" django_crontab
+  - DJANGO_SETTINGS_MODULE=tests.test_settings nosetests
   - coverage report
