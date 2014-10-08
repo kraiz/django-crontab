@@ -1,10 +1,8 @@
-import pkgutil
-import unittest
+from django.core.management import setup_environ
+from django.test.utils import setup_test_environment
+
+import settings
 
 
-for loader, module_name, is_pkg in pkgutil.walk_packages(__path__):
-    module = loader.find_module(module_name).load_module(module_name)
-    for name in dir(module):
-        obj = getattr(module, name)
-        if isinstance(obj, type) and issubclass(obj, unittest.TestCase):
-            exec ('%s = obj' % obj.__name__)
+setup_environ(settings)
+setup_test_environment()
