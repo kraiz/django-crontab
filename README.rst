@@ -1,3 +1,6 @@
+.. image:: https://travis-ci.org/kraiz/django-crontab.svg?branch=master
+    :target: https://travis-ci.org/kraiz/django-crontab
+
 about
 =====
 
