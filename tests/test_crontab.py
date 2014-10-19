@@ -21,8 +21,8 @@ from django_crontab.crontab import Crontab
 def test_read_crontab(mock_popen):
     """Test reading from the crontab."""
     mock_popen.return_value = Mock(
-        stdout=StringIO(''),
-        stderr=StringIO('crontab: no crontab for <user>')
+        stdout=StringIO(u''),
+        stderr=StringIO(u'crontab: no crontab for <user>')
     )
 
     crontab = Crontab()
