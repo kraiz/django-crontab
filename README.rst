@@ -1,5 +1,7 @@
 .. image:: https://travis-ci.org/kraiz/django-crontab.svg?branch=master
     :target: https://travis-ci.org/kraiz/django-crontab
+.. image:: https://coveralls.io/repos/kraiz/django-crontab/badge.png
+    :target: https://coveralls.io/r/kraiz/django-crontab
 
 about
 =====
