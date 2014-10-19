@@ -6,6 +6,7 @@ import json
 import logging
 import os
 import tempfile
+import sys
 
 from django.conf import settings
 
