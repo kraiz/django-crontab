@@ -1,0 +1,4 @@
+*.pyc
+.idea
+.vagrant
+Vagrantfile
