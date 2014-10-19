@@ -18,10 +18,11 @@ matrix:
     - python: "3.4"
       env: DJANGO=1.4
 install:
-  - pip install coverage flake8
+  - pip install flake8 coveralls
   - pip install Django==$DJANGO
   - pip install -e .
 script:
   - flake8 django_crontab --ignore=E501
-  - DJANGO_SETTINGS_MODULE=tests.settings nosetests
-  - coverage report
+  - DJANGO_SETTINGS_MODULE=tests.settings nosetests --with-coverage --cover-package=django_crontab
+after_success:
+  - coveralls
