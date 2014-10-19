@@ -14,7 +14,7 @@ from django.utils.importlib import import_module
 
 from django_crontab.app_settings import Settings
 
-string_type = basestr if sys.version_info[0] == 2 else str  # flake8: noqa
+string_type = basestring if sys.version_info[0] == 2 else str  # flake8: noqa
 
 logger = logging.getLogger(__name__)
 
