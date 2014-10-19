@@ -2,6 +2,12 @@
     :target: https://travis-ci.org/kraiz/django-crontab
 .. image:: https://coveralls.io/repos/kraiz/django-crontab/badge.png
     :target: https://coveralls.io/r/kraiz/django-crontab
+.. image:: https://pypip.in/download/django-crontab/badge.svg
+    :target: https://pypi.python.org/pypi/django-crontab/
+.. image:: https://pypip.in/version/django-crontab/badge.svg
+    :target: https://pypi.python.org/pypi/django-crontab/
+.. image:: https://pypip.in/py_versions/django-crontab/badge.svg
+    :target: https://pypi.python.org/pypi/django-crontab/
 
 about
 =====
