@@ -13,6 +13,8 @@ from django.utils.importlib import import_module
 
 from django_crontab.app_settings import Settings
 
+string_type = basestr if sys.version_info[0] == 2 else str  # flake8: noqa
+
 logger = logging.getLogger(__name__)
 
 
@@ -62,7 +64,7 @@ class Crontab(object):
         """
         for job in self.settings.CRONJOBS:
             # differ format and find job's suffix
-            if len(job) > 2 and isinstance(job[2], (basestring, unicode)):
+            if len(job) > 2 and isistance(job[2], string_type):
                 # format 1 job
                 job_suffix = job[2]
             elif len(job) > 4:
