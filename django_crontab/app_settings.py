@@ -1,7 +1,10 @@
-from django.utils.importlib import import_module
+from __future__ import print_function
+
 import os
 import re
 import sys
+
+from django.utils.importlib import import_module
 
 
 class Settings():
@@ -20,7 +23,7 @@ class Settings():
             self. DJANGO_MANAGE_PATH = settings.CRONTAB_DJANGO_MANAGE_PATH
             # check if it's really there
             if not os.path.exists(self.DJANGO_MANAGE_PATH):
-                print 'ERROR: No manage.py file found at "%s". Check settings.CRONTAB_DJANGO_MANAGE_PATH!' % self.DJANGO_MANAGE_PATH
+                print('ERROR: No manage.py file found at "%s". Check settings.CRONTAB_DJANGO_MANAGE_PATH!' % self.DJANGO_MANAGE_PATH)
         else:
             def ext(fpath):
                 return os.path.splitext(fpath)[0] + '.py'
@@ -30,7 +33,7 @@ class Settings():
                 try:  # Django 1.4+
                     self.DJANGO_MANAGE_PATH = ext(import_module('manage').__file__)
                 except ImportError:
-                    print 'ERROR: Can\'t find your manage.py - please define settings.CRONTAB_DJANGO_MANAGE_PATH'
+                    print('ERROR: Can\'t find your manage.py - please define settings.CRONTAB_DJANGO_MANAGE_PATH')
 
         self.PYTHON_EXECUTABLE = getattr(settings, 'CRONTAB_PYTHON_EXECUTABLE', sys.executable)
 
