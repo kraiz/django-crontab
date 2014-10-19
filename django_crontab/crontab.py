@@ -60,7 +60,6 @@ class Crontab(object):
         """
         Adds all jobs defined in CRONJOBS setting to internal buffer
         """
-        print(self.settings.CRONJOBS)
         for job in self.settings.CRONJOBS:
             # differ format and find job's suffix
             if len(job) > 2 and isinstance(job[2], (basestring, unicode)):
