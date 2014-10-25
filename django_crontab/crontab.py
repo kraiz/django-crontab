@@ -157,7 +157,9 @@ class Crontab(object):
         """
         Builds an md5 hash representing the job
         """
-        return hashlib.md5(json.dumps(job).encode('utf-8')).hexdigest()
+        j = json.JSONEncoder(sort_keys=True).encode(job)
+        h = hashlib.md5(j.encode('utf-8')).hexdigest()
+        return h
 
     def __get_job_by_hash(self, job_hash):
         """

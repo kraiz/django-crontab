@@ -63,7 +63,7 @@ def test_run_args_only_format2_job(method_to_call):
 @patch('tests.cron.cron_job')
 def test_run_format2_job(method_to_call):
     crontab = Crontab()
-    crontab.run_job('fe2f7249477f5c7270f08a7a74733c98')
+    crontab.run_job('13e8169dffe273b8b0c5f8abe1b6f643')
     method_to_call.assert_called_with(1, 'two', test=34, a='s2')
 
 @override_settings(CRONJOBS=[('*/1 * * * *', 'tests.cron.cron_job', [1, 'two'], dict(), 'some suffix')])
