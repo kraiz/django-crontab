@@ -30,6 +30,30 @@ def test_read_crontab(mock_popen):
 
     mock_popen.assert_called_with('/usr/bin/crontab -l')
 
+@override_settings(CRONJOBS=[('*/1 * * * *', 'tests.cron.cron_job')])
+@patch('os.popen')
+@patch('os.system')
+def test_read_write_crontab(mock_system, mock_popen):
+    def crontab_write_mock(cmd):
+        executable, tmp_file = cmd.split()
+        assert_equal(executable, '/usr/bin/crontab')
+        with open(tmp_file, 'r') as f:
+            assert_equal(
+                ['@reboot /existing/command --with=2 params\n', '1 2 3 4 5 /new/command > /var/log/cmd.log\n'],
+                f.readlines()
+            )
+        return ''
+
+    mock_popen.return_value = StringIO(u'@reboot /existing/command --with=2 params\n')
+    mock_system.side_effect = crontab_write_mock
+    with Crontab() as crontab:
+        mock_popen.assert_called_with('/usr/bin/crontab -l')
+        assert_equal(['@reboot /existing/command --with=2 params\n'], crontab.crontab_lines)
+        crontab.crontab_lines.append('1 2 3 4 5 /new/command > /var/log/cmd.log\n')
+
+    mock_system.assert_called_once()
+
+
 @override_settings(CRONJOBS=[('*/5 * * * *', 'myproject.myapp.cron.my_scheduled_job')])
 def test_add_jobs():
     crontab = Crontab()
