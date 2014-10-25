@@ -168,4 +168,4 @@ class Crontab(object):
         for job in self.settings.CRONJOBS:
             if self.__hash_job(job) == job_hash:
                 return job
-        return None
+
