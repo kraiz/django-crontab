@@ -65,7 +65,7 @@ class Crontab(object):
         """
         for job in self.settings.CRONJOBS:
             # differ format and find job's suffix
-            if len(job) > 2 and isistance(job[2], string_type):
+            if len(job) > 2 and isinstance(job[2], string_type):
                 # format 1 job
                 job_suffix = job[2]
             elif len(job) > 4:
