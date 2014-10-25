@@ -126,7 +126,7 @@ class Crontab(object):
         """
         job = self.__get_job_by_hash(job_hash)
         job_name = job[1]
-        job_args = job[2] if len(job) > 2 else []
+        job_args = job[2] if len(job) > 2 and not isinstance(job[2], string_type) else []
         job_kwargs = job[3] if len(job) > 3 else {}
 
         lock_file_name = None
