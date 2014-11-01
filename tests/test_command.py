@@ -59,7 +59,7 @@ def test_show_command(show_mock, run_mock, remove_mock, add_mock):
 @patch.object(Crontab, 'remove_jobs')
 @patch.object(Crontab, 'run_job')
 @patch.object(Crontab, 'show_jobs')
-def test_show_command(show_mock, run_mock, remove_mock, add_mock):
+def test_help_command(show_mock, run_mock, remove_mock, add_mock):
     call_command('crontab', 'help')
     assert not remove_mock.called
     assert not add_mock.called
