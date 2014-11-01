@@ -11,6 +11,8 @@ DATABASES = {
     }
 }
 
+MIDDLEWARE_CLASSES = ()
+
 SECRET_KEY = 'not-so-secret'
 
 LOGGING = {
