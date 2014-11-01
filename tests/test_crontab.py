@@ -71,7 +71,6 @@ def test_add_single_simple_job():
     ('* 3 * * *', 'tests.cron.cron_job', '> /home/myhome/logs/cron_job.log'),
     ('0 4 * * *', 'tests.cron.cron_job', [1, 'two'], {'test': 34, 'a': 's2'}),
     ('1 2 */5 * 0', 'tests.cron.cron_job', [1, 'two'], {'test': 34, 'a': 's2'}, 'suffix'),
-    ('@reboot', 'tests.cron.cron_job', [], {}, 'suffix'),
 ])
 def test_add_many_different_jobs():
     crontab = Crontab()
@@ -82,7 +81,6 @@ def test_add_many_different_jobs():
         '* 3 * * *  %(exe)s %(manage)s crontab run c03a5151588fde26da760240ed6a9b9a > /home/myhome/logs/cron_job.log  # django-cronjobs for tests\n' % ctx,
         '0 4 * * *  %(exe)s %(manage)s crontab run e5b6fc0d28edb93283faf23e808b1065   # django-cronjobs for tests\n' % ctx,
         '1 2 */5 * 0  %(exe)s %(manage)s crontab run e1d364332622aa2c382fcb325a5b388a suffix  # django-cronjobs for tests\n' % ctx,
-        '@reboot  %(exe)s %(manage)s crontab run ed4d4f3082654defa6f5acd75aaead34 suffix  # django-cronjobs for tests\n' % ctx,
     ]
     assert_equal(len(expected_lines), len(crontab.crontab_lines))
     for expected, actual in zip(expected_lines, crontab.crontab_lines):
@@ -105,7 +103,6 @@ def test_remove_single_simple_job():
     ('* 3 * * *', 'tests.cron.cron_job', '> /home/myhome/logs/cron_job.log'),
     ('0 4 * * *', 'tests.cron.cron_job', [1, 'two'], {'test': 34, 'a': 's2'}),
     ('1 2 */5 * 0', 'tests.cron.cron_job', [1, 'two'], {'test': 34, 'a': 's2'}, 'suffix'),
-    ('@reboot', 'tests.cron.cron_job', [], {}, 'suffix'),
 ])
 def test_remove_many_different_jobs():
     crontab = Crontab()
@@ -114,7 +111,6 @@ def test_remove_many_different_jobs():
         '*/5 * * * *  %(exe)s %(manage)s crontab run eb868be6b69c31faa6b03a4cf0dd3d8c   # django-cronjobs for tests\n' % ctx,
         '* 3 * * *  %(exe)s %(manage)s crontab run c03a5151588fde26da760240ed6a9b9a > /home/myhome/logs/cron_job.log  # django-cronjobs for tests\n' % ctx,
         '0 4 * * *  %(exe)s %(manage)s crontab run e5b6fc0d28edb93283faf23e808b1065   # django-cronjobs for tests\n' % ctx,
-        '@reboot  %(exe)s %(manage)s crontab run ed4d4f3082654defa6f5acd75aaead34 suffix  # django-cronjobs for tests\n' % ctx,
     ]
     crontab.remove_jobs()
     assert_equal([], crontab.crontab_lines)
