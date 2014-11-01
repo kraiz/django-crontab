@@ -2,10 +2,13 @@ from __future__ import print_function
 
 from mock import patch
 
+import django
 from django.core.management import call_command
 
 from django_crontab.crontab import Crontab
 
+
+django.setup()
 
 
 @patch.object(Crontab, 'add_jobs')
