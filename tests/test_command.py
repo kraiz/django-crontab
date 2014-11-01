@@ -8,7 +8,8 @@ from django.core.management import call_command
 from django_crontab.crontab import Crontab
 
 
-django.setup()
+if django.VERSION >= (1, 7):
+    django.setup()
 
 
 @patch.object(Crontab, 'add_jobs')
