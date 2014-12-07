@@ -1,4 +1,3 @@
 *.pyc
 .idea
-.vagrant
-Vagrantfile
+.coverage
