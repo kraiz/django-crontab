@@ -4,7 +4,7 @@ import sys
 
 from mock import Mock, patch
 
-from nose.tools import assert_equal
+from nose.tools import assert_equal, raises
 
 try:
     from io import StringIO
@@ -219,3 +219,10 @@ def recursive_job_for_lock_checking():
         crontab = Crontab()
         crontab.run_job('4a8e5d03cf136a16c7d120c41efb602b')
 recursive_job_for_lock_checking.called_already = False
+
+
+@raises(RuntimeError)
+def test_locked_job():
+    crontab = Crontab()
+    crontab.run_job('4a8e5d03cf136a16c7d120c41efb602b')
+
