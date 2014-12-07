@@ -94,12 +94,12 @@ class Crontab(object):
         """
         Print the jobs from from crontab
         """
-        print("Currently active jobs in crontab:")
+        print(u'Currently active jobs in crontab:')
         for line in self.crontab_lines[:]:
             job = self.settings.CRONTAB_LINE_REGEXP.findall(line)
             if job and job[0][4] == self.settings.CRONTAB_COMMENT:
                 if self.verbosity >= 1:
-                    print('%s -> %s' % (
+                    print(u'%s -> %s' % (
                         job[0][2].split()[4],
                         self.__get_job_by_hash(job[0][2][job[0][2].find('run') + 4:].split()[0])
                     ))
