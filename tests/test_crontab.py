@@ -59,7 +59,18 @@ def test_read_write_crontab(mock_system, mock_popen):
 def test_add_single_simple_job():
     crontab = Crontab()
     crontab.add_jobs()
-    expected_line = ['*/5 * * * *  %(exe)s %(manage)s crontab run eb868be6b69c31faa6b03a4cf0dd3d8c   # django-cronjobs for tests\n' % {
+    expected_line = ['*/5 * * * * %(exe)s %(manage)s crontab run eb868be6b69c31faa6b03a4cf0dd3d8c # django-cronjobs for tests\n' % {
+        'exe': sys.executable,
+        'manage': settings.CRONTAB_DJANGO_MANAGE_PATH
+    }]
+    assert_equal(expected_line, crontab.crontab_lines)
+
+
+@override_settings(CRONJOBS=[('*/5 * * * *', 'myproject.myapp.cron.my_scheduled_job')], CRONTAB_DJANGO_SETTINGS_MODULE='myproj.other_settings')
+def test_add_job_with_settings():
+    crontab = Crontab()
+    crontab.add_jobs()
+    expected_line = ['*/5 * * * * %(exe)s %(manage)s crontab run eb868be6b69c31faa6b03a4cf0dd3d8c --settings=myproj.other_settings # django-cronjobs for tests\n' % {
         'exe': sys.executable,
         'manage': settings.CRONTAB_DJANGO_MANAGE_PATH
     }]
@@ -77,10 +88,10 @@ def test_add_many_different_jobs():
     crontab.add_jobs()
     ctx = dict(exe=sys.executable, manage=settings.CRONTAB_DJANGO_MANAGE_PATH)
     expected_lines = [
-        '*/5 * * * *  %(exe)s %(manage)s crontab run eb868be6b69c31faa6b03a4cf0dd3d8c   # django-cronjobs for tests\n' % ctx,
-        '* 3 * * *  %(exe)s %(manage)s crontab run c03a5151588fde26da760240ed6a9b9a > /home/myhome/logs/cron_job.log  # django-cronjobs for tests\n' % ctx,
-        '0 4 * * *  %(exe)s %(manage)s crontab run e5b6fc0d28edb93283faf23e808b1065   # django-cronjobs for tests\n' % ctx,
-        '1 2 */5 * 0  %(exe)s %(manage)s crontab run e1d364332622aa2c382fcb325a5b388a suffix  # django-cronjobs for tests\n' % ctx,
+        '*/5 * * * * %(exe)s %(manage)s crontab run eb868be6b69c31faa6b03a4cf0dd3d8c # django-cronjobs for tests\n' % ctx,
+        '* 3 * * * %(exe)s %(manage)s crontab run c03a5151588fde26da760240ed6a9b9a > /home/myhome/logs/cron_job.log # django-cronjobs for tests\n' % ctx,
+        '0 4 * * * %(exe)s %(manage)s crontab run e5b6fc0d28edb93283faf23e808b1065 # django-cronjobs for tests\n' % ctx,
+        '1 2 */5 * 0 %(exe)s %(manage)s crontab run e1d364332622aa2c382fcb325a5b388a suffix # django-cronjobs for tests\n' % ctx,
     ]
     assert_equal(len(expected_lines), len(crontab.crontab_lines))
     for expected, actual in zip(expected_lines, crontab.crontab_lines):

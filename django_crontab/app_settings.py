@@ -19,6 +19,8 @@ class Settings():
 
         self.DJANGO_PROJECT_NAME = getattr(settings, 'CRONTAB_DJANGO_PROJECT_NAME', os.environ['DJANGO_SETTINGS_MODULE'].split('.')[0])
 
+        self.DJANGO_SETTINGS_MODULE = getattr(settings, 'CRONTAB_DJANGO_SETTINGS_MODULE', None)
+
         if hasattr(settings, 'CRONTAB_DJANGO_MANAGE_PATH'):
             self. DJANGO_MANAGE_PATH = settings.CRONTAB_DJANGO_MANAGE_PATH
             # check if it's really there

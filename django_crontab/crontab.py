@@ -76,17 +76,16 @@ class Crontab(object):
             self.crontab_lines.append(self.settings.CRONTAB_LINE_PATTERN % {
                 'time': job[0],
                 'comment': self.settings.CRONTAB_COMMENT,
-                'command': (
-                    '%(global_prefix)s %(exec)s %(manage)s crontab run '
-                    '%(jobname)s %(job_suffix)s %(global_suffix)s'
-                ) % {
-                    'global_prefix': self.settings.COMMAND_PREFIX,
-                    'exec': self.settings.PYTHON_EXECUTABLE,
-                    'manage': self.settings.DJANGO_MANAGE_PATH,
-                    'jobname': self.__hash_job(job),
-                    'job_suffix': job_suffix,
-                    'global_suffix': self.settings.COMMAND_SUFFIX
-                }
+                'command': ' '.join(filter(None, [
+                    self.settings.COMMAND_PREFIX,
+                    self.settings.PYTHON_EXECUTABLE,
+                    self.settings.DJANGO_MANAGE_PATH,
+                    'crontab', 'run',
+                    self.__hash_job(job),
+                    '--settings=%s' % self.settings.DJANGO_SETTINGS_MODULE if self.settings.DJANGO_SETTINGS_MODULE else '',
+                    job_suffix,
+                    self.settings.COMMAND_SUFFIX
+                ]))
             })
             if self.verbosity >= 1:
                 print('  adding cronjob: (%s) -> %s' % (self.__hash_job(job), job))
