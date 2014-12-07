@@ -222,7 +222,7 @@ recursive_job_for_lock_checking.called_already = False
 
 
 @raises(RuntimeError)
-def test_locked_job():
+def test_job_not_found():
     crontab = Crontab()
     crontab.run_job('4a8e5d03cf136a16c7d120c41efb602b')
 
