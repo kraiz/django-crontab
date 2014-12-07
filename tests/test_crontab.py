@@ -204,3 +204,18 @@ def test_run_args_only_format2_job(method_to_call):
     crontab.run_job('fefa68aed4ff509331ee6a5b62ea5e5c')
     method_to_call.assert_called_with(1, 'two')
 
+
+@override_settings(CRONJOBS=[('* * * * *', 'tests.test_crontab.recursive_job_for_lock_checking')], CRONTAB_LOCK_JOBS=True)
+def test_locked_job():
+    crontab = Crontab()
+    crontab.run_job('4a8e5d03cf136a16c7d120c41efb602b')
+
+
+def recursive_job_for_lock_checking():
+    if recursive_job_for_lock_checking.called_already:
+        assert False, "This call should have been prevented by locking mechanism!"
+    else:
+        recursive_job_for_lock_checking.called_already = True
+        crontab = Crontab()
+        crontab.run_job('4a8e5d03cf136a16c7d120c41efb602b')
+recursive_job_for_lock_checking.called_already = False

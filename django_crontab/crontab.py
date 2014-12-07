@@ -133,8 +133,8 @@ class Crontab(object):
             lock_file = open(os.path.join(tempfile.gettempdir(), 'django_crontab_%s.lock' % job_hash), 'w')
             lock_file_name = lock_file.name
             try:
-                fcntl.lockf(lock_file, fcntl.LOCK_EX | fcntl.LOCK_NB)
-            except:
+                fcntl.flock(lock_file, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            except IOError:
                 logger.warning('Tried to start cron job %s that is already running.', job)
                 return
 
@@ -148,9 +148,10 @@ class Crontab(object):
 
         if self.settings.LOCK_JOBS:
             try:
-                os.remove(lock_file_name)
-            except:
-                logger.exception('Error deleting lockfile %s of job %s', lock_file_name, job)
+                fcntl.flock(lock_file, fcntl.LOCK_UN)
+            except IOError:
+                logger.exception('Error unlocking %s', lock_file_name)
+                return
 
     def __hash_job(self, job):
         """
