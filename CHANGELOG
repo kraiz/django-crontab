@@ -3,6 +3,7 @@
 * refactoring for being better testing (big thx arski)
 * feature: TESTS! > 90% coverage
 * feature: compatiblity with Django 1.3 - 1.7 and Python 3.3 + 3.4
+* feature: ability to run the scheduled command with a different settings module #10 (thx chamaken)
 * bugfix: fixed unsupported compare between str and int in python 3.4 #19 (thx justdoit0823)
 
 0.5.1

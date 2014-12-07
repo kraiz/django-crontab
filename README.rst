@@ -110,6 +110,11 @@ CRONTAB_DJANGO_MANAGE_PATH
   - path to manage.py file (including the manage.py itself, i.e. '/home/john/web/manage.py')
   - default is build using DJANGO_PROJECT_NAME
 
+CRONTAB_DJANGO_SETTINGS_MODULE
+  - dotted python path to the settings module to run the command with
+  - default is the common one from the environment variable and will not be overwritten
+  - since 0.6.0
+
 CRONTAB_PYTHON_EXECUTABLE
   - path to the python interpreter executable used to run the scheduled job
   - default uses the interpreter executable used to `add` the jobs (via 'python manage.py crontab add')
@@ -130,7 +135,7 @@ CRONTAB_COMMENT
 
 contributors
 =======
-arski cinghiale meric426 justdoit0823
+arski cinghiale meric426 justdoit0823 chamaken
 
 license
 =======
