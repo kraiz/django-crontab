@@ -98,6 +98,28 @@ def test_add_many_different_jobs():
         assert_equal(expected, actual)
 
 
+@override_settings(CRONJOBS=[
+    ('*/1 * * * *', 'tests.cron.cron_job'),
+    ('1 2 */5 * 0', 'tests.cron.cron_job', [1, 'two'], {'test': 34}, 'suffix'),
+])
+def test_show_jobs():
+    crontab = Crontab()
+    crontab.add_jobs()
+
+    stdout = sys.stdout
+    try:
+        sys.stdout = StringIO()
+        crontab.show_jobs()
+        assert_equal(
+            "Currently active jobs in crontab:\n"
+            "4f30993ab69a8c5763ce55f762ef0433 -> ('*/1 * * * *', 'tests.cron.cron_job')\n"
+            "95f7703a7d571917dda67f8bd294868a -> ('1 2 */5 * 0', 'tests.cron.cron_job', [1, 'two'], {'test': 34}, 'suffix')\n",
+            sys.stdout.getvalue()
+        )
+    finally:
+        sys.stdout = stdout
+
+
 @override_settings(CRONJOBS=[('*/5 * * * *', 'myproject.myapp.cron.my_scheduled_job')])
 def test_remove_single_simple_job():
     crontab = Crontab()
