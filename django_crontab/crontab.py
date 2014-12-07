@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 class Crontab(object):
 
     def __init__(self, **options):
-        self.verbosity = options.get('verbosity', 1)
+        self.verbosity = int(options.get('verbosity', 1))
         self.readonly = options.get('readonly', False)
         self.crontab_lines = []
         self.settings = Settings(settings)
