@@ -168,4 +168,8 @@ class Crontab(object):
         for job in self.settings.CRONJOBS:
             if self.__hash_job(job) == job_hash:
                 return job
+        raise RuntimeError(
+            'No job with hash %s found. It seems the crontab is out of sync with your settings.CRONJOBS. '
+            'Run "python manage.py crontab add" again to resolve this issue!' % job_hash
+        )
 
