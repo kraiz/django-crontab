@@ -134,8 +134,13 @@ CRONTAB_COMMENT
   - default: 'django-crontabs for ' + CRONTAB_DJANGO_PROJECT_NAME
 
 contributors
-=======
+============
 arski cinghiale meric426 justdoit0823 chamaken
+
+faq
+===
+* Will it work with windows?
+  - No.
 
 license
 =======
