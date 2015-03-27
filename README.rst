@@ -27,7 +27,7 @@ add it to installed apps in django settings.py::
         ...
     )
 
-now create a new method that should be executed by cron every 5 minutes, f.e. in `myproject/myapp/cron.py`::
+now create a new method that should be executed by cron every 5 minutes, f.e. in `myapp/cron.py`::
 
     def my_scheduled_job():
       pass
@@ -41,7 +41,7 @@ now add this to your settings.py::
 you can also define positional and keyword arguments which let you call django management commands::
 
     CRONJOBS = [
-        ('*/5 * * * *', 'myproject.myapp.cron.other_scheduled_job', ['arg1', 'arg2'], {'verbose': 0}),
+        ('*/5 * * * *', 'myapp.cron.other_scheduled_job', ['arg1', 'arg2'], {'verbose': 0}),
         ('0   4 * * *', 'django.core.management.call_command', ['clearsessions']),
     ]
 
@@ -83,13 +83,13 @@ CRONJOBS
   - example::
 
         CRONJOBS = [
-            ('*/5 * * * *', 'myproject.myapp.cron.my_scheduled_job'),
+            ('*/5 * * * *', 'myapp.cron.my_scheduled_job'),
 
             # format 1
-            ('0   0 1 * *', 'myproject.myapp.cron.my_scheduled_job', '> /tmp/last_scheduled_job.log'),
+            ('0   0 1 * *', 'myapp.cron.my_scheduled_job', '> /tmp/last_scheduled_job.log'),
 
             # format 2
-            ('0   0 1 * *', 'myproject.myapp.cron.other_scheduled_job', ['myapp']),
+            ('0   0 1 * *', 'myapp.cron.other_scheduled_job', ['myapp']),
             ('0   0 * * 0', 'django.core.management.call_command', ['dumpdata', 'auth'], {'indent': 4}, '> /home/john/backups/last_sunday_auth_backup.json'),
         ]
 
