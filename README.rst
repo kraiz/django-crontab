@@ -139,8 +139,10 @@ arski cinghiale meric426 justdoit0823 chamaken
 
 faq
 ===
-* Will it work with windows?
+* **Will it work with windows?**
   - No.
+* **I'm getting "bad command"/"errors in cronfile" while installing via "crontab add". What's wrong?**
+  - Maybe it's your cron time format, it can have 5 or 6 fields. Check that your system supports 6 or just define 5 in `CRONJOBS`. (see #23)
 
 license
 =======
