@@ -9,6 +9,9 @@ class Command(BaseCommand):
     help = 'run this command to add, show or remove the jobs defined in CRONJOBS setting from/to crontab'
     crontab_lines = []
 
+    def add_arguments(self, parser):
+        parser.add_argument('action', help='action to run, see help')
+
     def handle(self, *args, **options):
         """
         Dispatches by given subcommand
