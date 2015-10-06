@@ -88,7 +88,7 @@ CRONJOBS
             ('*/5 * * * *', 'myapp.cron.my_scheduled_job'),
 
             # format 1
-            ('0   0 1 * *', 'myapp.cron.my_scheduled_job', '> /tmp/last_scheduled_job.log'),
+            ('0   0 1 * *', 'myapp.cron.my_scheduled_job', '>> /tmp/scheduled_job.log'),
 
             # format 2
             ('0   0 1 * *', 'myapp.cron.other_scheduled_job', ['myapp']),
