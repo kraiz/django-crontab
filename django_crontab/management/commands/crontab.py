@@ -11,6 +11,7 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument('action', help='action to run, see help')
+        parser.add_argument('jobhash', default='')
 
     def handle(self, *args, **options):
         """
