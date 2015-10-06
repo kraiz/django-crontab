@@ -15,9 +15,11 @@ matrix:
       env: REQUIREMENTS="django>=1.7,<1.8"
     - python: "3.5"
       env: REQUIREMENTS="django>=1.8,<1.9"
-    allow_failures:
-      - env: REQUIREMENTS="https://github.com/django/django/archive/master.tar.gz"
-cache: pip
+  allow_failures:
+    - env: REQUIREMENTS="https://github.com/django/django/archive/master.tar.gz"
+cache:
+  directories:
+    - $HOME/.cache/pip
 install:
   - pip install flake8 coveralls $REQUIREMENTS
   - pip install -e .
