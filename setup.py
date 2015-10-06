@@ -15,7 +15,7 @@ setup(
         'django_crontab',
         'django_crontab.management',
         'django_crontab.management.commands'],
-    requires=[
+    install_requires=[
         'Django>=1.8'
     ],
     classifiers=[
