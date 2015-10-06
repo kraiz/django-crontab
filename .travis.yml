@@ -6,11 +6,12 @@ python:
   - "3.4"
   - "3.5"
 env:
-  - REQUIREMENTS="django>=1.7,<1.8"
   - REQUIREMENTS="django>=1.8,<1.9"
   - REQUIREMENTS="https://github.com/django/django/archive/master.tar.gz"
 matrix:
   exclude:
+    - python: "3.3"
+      env: REQUIREMENTS="https://github.com/django/django/archive/master.tar.gz"
     - python: "3.5"
       env: REQUIREMENTS="django>=1.7,<1.8"
     - python: "3.5"
