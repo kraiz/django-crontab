@@ -1,18 +1,20 @@
-.. image:: https://travis-ci.org/kraiz/django-crontab.svg?branch=master
+.. image:: https://img.shields.io/travis/kraiz/django-crontab/master.svg
     :target: https://travis-ci.org/kraiz/django-crontab
-.. image:: https://coveralls.io/repos/kraiz/django-crontab/badge.png
+.. image:: https://img.shields.io/coveralls/kraiz/django-crontab/master.svg
     :target: https://coveralls.io/r/kraiz/django-crontab
-.. image:: https://pypip.in/download/django-crontab/badge.svg
-    :target: https://pypi.python.org/pypi/django-crontab/
-.. image:: https://pypip.in/version/django-crontab/badge.svg
-    :target: https://pypi.python.org/pypi/django-crontab/
-.. image:: https://pypip.in/py_versions/django-crontab/badge.svg
-    :target: https://pypi.python.org/pypi/django-crontab/
+.. image:: https://img.shields.io/pypi/dw/django-crontab.svg
+    :target: https://pypi.python.org/pypi/django-crontab
+.. image:: https://img.shields.io/pypi/v/django-crontab.svg
+    :target: https://pypi.python.org/pypi/django-crontab
+.. image:: https://img.shields.io/pypi/pyversions/django-crontab.svg
+    :target: https://pypi.python.org/pypi/django-crontab
+.. image:: https://img.shields.io/pypi/l/django-crontab.svg
+    :target: https://pypi.python.org/pypi/django-crontab
 
 about
 =====
 
-dead simple crontab powered job scheduling for django.
+dead simple crontab powered job scheduling for django (1.8+).
 
 setup
 =====
@@ -139,6 +141,11 @@ arski cinghiale meric426 justdoit0823 chamaken
 
 faq
 ===
+* **I'm using this old django version (<1.8) and can't install this package. What should i do?**
+  - Yeah, update django of course (!) or - as you seem to be familiar with old, unsupported versions, install the old version of this package too (it support django 1.3-1.7)::
+
+    pip install django-crontab==0.6.0
+
 * **Will it work with windows?**
   - No.
 * **I'm getting "bad command"/"errors in cronfile" while installing via "crontab add". What's wrong?**
