@@ -37,6 +37,6 @@ class Command(BaseCommand):
                 else:
                     jobhash = options['jobhash']
 
-                Crontab().run_job(args[1])
+                Crontab().run_job(jobhash)
                 return
         print(help)
