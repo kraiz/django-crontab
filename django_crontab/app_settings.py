@@ -4,7 +4,7 @@ import os
 import re
 import sys
 
-from django.utils.importlib import import_module
+from importlib import import_module
 
 
 class Settings():

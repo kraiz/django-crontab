@@ -8,9 +8,9 @@ import os
 import tempfile
 import sys
 
-from django.conf import settings
+from importlib import import_module
 
-from django.utils.importlib import import_module
+from django.conf import settings
 
 from django_crontab.app_settings import Settings
 
