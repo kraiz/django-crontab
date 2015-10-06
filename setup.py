@@ -5,7 +5,7 @@ from setuptools import setup
 setup(
     name='django-crontab',
     description='dead simple crontab powered job scheduling for django',
-    version='0.6.0',
+    version='0.7.0',
     author='Lars Kreisz',
     author_email='der.kraiz@gmail.com',
     license='MIT',
@@ -16,10 +16,10 @@ setup(
         'django_crontab.management',
         'django_crontab.management.commands'],
     requires=[
-        'Django'
+        'Django>=1.8'
     ],
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Environment :: Web Environment',
         'Framework :: Django',
         'Intended Audience :: Developers',
@@ -28,11 +28,11 @@ setup(
         'Operating System :: POSIX :: Linux',
         'Programming Language :: Python',
         'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
         'Topic :: System :: Installation/Setup'
     ]
 )
