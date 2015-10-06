@@ -52,7 +52,7 @@ def test_read_write_crontab(mock_system, mock_popen):
         assert_equal(['@reboot /existing/command --with=2 params\n'], crontab.crontab_lines)
         crontab.crontab_lines.append('1 2 3 4 5 /new/command > /var/log/cmd.log\n')
 
-    mock_system.assert_called_once()
+    assert mock_system.called
 
 
 @override_settings(CRONJOBS=[('*/5 * * * *', 'myproject.myapp.cron.my_scheduled_job')])

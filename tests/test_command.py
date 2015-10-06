@@ -2,14 +2,15 @@ from __future__ import print_function
 
 from mock import patch
 
+from nose.tools import assert_raises
+
 import django
-from django.core.management import call_command
+from django.core.management import call_command, CommandError
 
 from django_crontab.crontab import Crontab
 
 
-if django.VERSION >= (1, 7):
-    django.setup()
+django.setup()
 
 
 @patch.object(Crontab, 'add_jobs')
@@ -60,7 +61,8 @@ def test_show_command(show_mock, run_mock, remove_mock, add_mock):
 @patch.object(Crontab, 'run_job')
 @patch.object(Crontab, 'show_jobs')
 def test_help_command(show_mock, run_mock, remove_mock, add_mock):
-    call_command('crontab', 'help')
+    with assert_raises(CommandError) as ce:
+        call_command('crontab', help=True)
     assert not remove_mock.called
     assert not add_mock.called
     assert not run_mock.called
