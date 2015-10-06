@@ -10,7 +10,7 @@ class Command(BaseCommand):
     crontab_lines = []
 
     def add_arguments(self, parser):
-        parser.add_argument('action', help='action to run, see help')
+        parser.add_argument('subcommand', help='subcommand to run, see help')
         parser.add_argument('jobhash', nargs='?', default='')
 
     def handle(self, *args, **options):
@@ -32,6 +32,11 @@ class Command(BaseCommand):
                     crontab.remove_jobs()
                 return
             elif args[0] == 'run':
+                if len(args) > 1:
+                    jobhash = args[1]
+                else:
+                    jobhash = options['jobhash']
+
                 Crontab().run_job(args[1])
                 return
         print(help)
