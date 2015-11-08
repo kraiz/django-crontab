@@ -129,7 +129,7 @@ CRONTAB_COMMAND_PREFIX
 CRONTAB_COMMAND_SUFFIX
   - something you wanne do after each job was executed.
   - default: '' (empty string)
-  - example: (do you know a good example?)
+  - example: '2>&1'
 
 CRONTAB_COMMENT
   - used for marking the added contab-lines for removing, default value includes project name to distinguish multiple projects on the same host and user
