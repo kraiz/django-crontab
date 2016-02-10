@@ -37,7 +37,7 @@ now create a new method that should be executed by cron every 5 minutes, f.e. in
 now add this to your settings.py::
 
     CRONJOBS = [
-        ('*/5 * * * *', 'myproject.myapp.cron.my_scheduled_job')
+        ('*/5 * * * *', 'myapp.cron.my_scheduled_job')
     ]
 
 you can also define positional and keyword arguments which let you call django management commands::
