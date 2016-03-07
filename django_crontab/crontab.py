@@ -101,7 +101,7 @@ class Crontab(object):
                 if self.verbosity >= 1:
                     print(u'%s -> %s' % (
                         job[0][2].split()[4],
-                        self.__get_job_by_hash(job[0][2][job[0][2].find('run') + 4:].split()[0])
+                        self.__get_job_by_hash(job[0][2][job[0][2].find('crontab run') + 12:].split()[0])
                     ))
 
     def remove_jobs(self):
@@ -115,7 +115,7 @@ class Crontab(object):
                 if self.verbosity >= 1:
                     print('removing cronjob: (%s) -> %s' % (
                         job[0][2].split()[4],
-                        self.__get_job_by_hash(job[0][2][job[0][2].find('run') + 4:].split()[0])
+                        self.__get_job_by_hash(job[0][2][job[0][2].find('crontab run') + 12:].split()[0])
                     ))
 
     # noinspection PyBroadException
