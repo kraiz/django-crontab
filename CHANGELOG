@@ -1,6 +1,6 @@
 0.7.1
 -----
-* bugfix: allow project path to contain "run"
+* bugfix: allow project path to contain "run" #30 (thx vinsia)
 
 0.7.0
 ------
