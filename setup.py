@@ -5,7 +5,7 @@ from setuptools import setup
 setup(
     name='django-crontab',
     description='dead simple crontab powered job scheduling for django',
-    version='0.7.0',
+    version='0.7.1',
     author='Lars Kreisz',
     author_email='lars.kreisz@gmail.com',
     license='MIT',
