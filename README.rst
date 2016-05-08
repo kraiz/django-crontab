@@ -150,6 +150,8 @@ faq
   - No.
 * **I'm getting "bad command"/"errors in cronfile" while installing via "crontab add". What's wrong?**
   - Maybe it's your cron time format, it can have 5 or 6 fields. Check that your system supports 6 or just define 5 in `CRONJOBS`. (see #23)
+* **Why does the LOGGING not work when started via cronjob?**
+  - That's maybe somehting about the current working dir. Please set your FileHandler's file path absolute and try again. (see #31)
 
 license
 =======
