@@ -61,7 +61,7 @@ removing all defined jobs is straight forward::
 
 config
 ======
-there are a bunch of setting vars to customize behavior. each of this comes with default values that should properly fit. if not, feel free to overwrite.
+there are a bunch of setting vars to customize behavior. each of them comes with default values that should properly fit. if not, feel free to overwrite.
 
 CRONJOBS
   - list of jobs, each defined as tuple:
@@ -122,12 +122,12 @@ CRONTAB_PYTHON_EXECUTABLE
   - default uses the interpreter executable used to `add` the jobs (via 'python manage.py crontab add')
 
 CRONTAB_COMMAND_PREFIX
-  - something you wanne do or declare before each job gets executed. A good point for environment variables.
+  - something you want to do or declare, before each job gets executed. A good place for environment variables.
   - default: '' (empty string)
   - example: 'STAGE=production'
 
 CRONTAB_COMMAND_SUFFIX
-  - something you wanne do after each job was executed.
+  - something you want to do after each job was executed.
   - default: '' (empty string)
   - example: '2>&1'
 
