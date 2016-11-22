@@ -8,6 +8,7 @@ python:
 env:
   - REQUIREMENTS="django>=1.8,<1.9"
   - REQUIREMENTS="django>=1.9,<1.10"
+  - REQUIREMENTS="django>=1.10,<1.11"
   - REQUIREMENTS="https://github.com/django/django/archive/master.tar.gz"
 matrix:
   exclude:
