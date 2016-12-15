@@ -68,13 +68,13 @@ CRONJOBS
 
     - format 1:
 
-      1. required: cron timing (in usual format: http://en.wikipedia.org/wiki/Cron#Format)
+      1. required: cron timing in usual format (see `Wikipedia <http://en.wikipedia.org/wiki/Cron#Format>`_ and `crontab.guru <https://crontab.guru/examples.html>`_ for more examples)
       2. required: the python module path to the method
       3. optional: a job specific suffix (f.e. to redirect out/err to a file, default: '')
 
     - format 2:
 
-      1. required: cron timing (in usual format: http://en.wikipedia.org/wiki/Cron#Format)
+      1. required: cron timing
       2. required: the python module path to the method
       3. optional: list of positional arguments for the method (default: [])
       4. optional: dict of keyword arguments for the method (default: {})
