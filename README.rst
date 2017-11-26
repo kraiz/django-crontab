@@ -148,10 +148,14 @@ faq
 
 * **Will it work with windows?**
   - No.
+* **Will it work within a docker?**
+  - Not immediately, you need to start the cron service.
+* **Problems with `pyenv`?**
+  - You maybe need to setup the PATH variable within crontab. Have a look at [#60](/../../issues/60)
 * **I'm getting "bad command"/"errors in cronfile" while installing via "crontab add". What's wrong?**
   - Maybe it's your cron time format, it can have 5 or 6 fields. Check that your system supports 6 or just define 5 in `CRONJOBS`. (see #23)
 * **Why does the LOGGING not work when started via cronjob?**
-  - That's maybe somehting about the current working dir. Please set your FileHandler's file path absolute and try again. (see #31)
+  - That's maybe somehting about the current working dir. Please set your FileHandler's file path absolute and try again. (see [#31](/../../issues/31))
 
 license
 =======
