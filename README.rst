@@ -18,44 +18,60 @@ dead simple crontab powered job scheduling for django (1.8+).
 
 setup
 =====
-install via pip::
+install via pip:
+
+.. code:: bash
 
     pip install django-crontab
 
-add it to installed apps in django settings.py::
+add it to installed apps in django settings.py:
+
+.. code:: python
 
     INSTALLED_APPS = (
         'django_crontab',
         ...
     )
 
-now create a new method that should be executed by cron every 5 minutes, f.e. in `myapp/cron.py`::
+now create a new method that should be executed by cron every 5 minutes, f.e. in `myapp/cron.py`:
+
+.. code:: python
 
     def my_scheduled_job():
       pass
 
-now add this to your settings.py::
+now add this to your settings.py:
+
+.. code:: python
 
     CRONJOBS = [
         ('*/5 * * * *', 'myapp.cron.my_scheduled_job')
     ]
 
-you can also define positional and keyword arguments which let you call django management commands::
+you can also define positional and keyword arguments which let you call django management commands:
+
+.. code:: python
 
     CRONJOBS = [
         ('*/5 * * * *', 'myapp.cron.other_scheduled_job', ['arg1', 'arg2'], {'verbose': 0}),
         ('0   4 * * *', 'django.core.management.call_command', ['clearsessions']),
     ]
 
-finally run this command to add all defined jobs from `CRONJOBS` to crontab (of the user which you are running this command with)::
+finally run this command to add all defined jobs from `CRONJOBS` to crontab (of the user which you are running this command with):
+
+.. code:: bash
 
     python manage.py crontab add
 
-show current active jobs of this project::
+show current active jobs of this project:
+
+.. code:: bash
 
     python manage.py crontab show
 
-removing all defined jobs is straight forward::
+removing all defined jobs is straight forward:
+
+.. code:: bash
 
     python manage.py crontab remove
 
@@ -82,7 +98,9 @@ CRONJOBS
 
   - NOTE: Run "python manage.py crontab add" each time you change CRONJOBS in any way!
   - default: []
-  - example::
+  - example:
+
+    .. code:: python
 
         CRONJOBS = [
             ('*/5 * * * *', 'myapp.cron.my_scheduled_job'),
