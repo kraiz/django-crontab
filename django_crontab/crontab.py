@@ -173,8 +173,9 @@ class Crontab(object):
         # run the function
         try:
             func(*job_args, **job_kwargs)
-        except:
+        except Exception as e:
             logger.exception('Failed to complete cronjob at %s', job)
+
 
         # if the LOCK_JOBS option is specified in settings
         if self.settings.LOCK_JOBS:
@@ -200,7 +201,9 @@ class Crontab(object):
         Finds the job by given hash
         """
         # iterate through all jobs as specified in settings
+        print(job_hash)
         for job in self.settings.CRONJOBS:
+            print(job)
             # return the job if the hash of the job matches the given hash
             if self.__hash_job(job) == job_hash:
                 return job
