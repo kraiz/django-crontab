@@ -173,8 +173,9 @@ class Crontab(object):
         # run the function
         try:
             func(*job_args, **job_kwargs)
-        except:
+        except Exception as e:
             logger.exception('Failed to complete cronjob at %s', job)
+
 
         # if the LOCK_JOBS option is specified in settings
         if self.settings.LOCK_JOBS:
