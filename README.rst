@@ -57,7 +57,7 @@ you can also define positional and keyword arguments which let you call django m
         ('0   4 * * *', 'django.core.management.call_command', ['clearsessions']),
     ]
 
-finally run this command to add all defined jobs from `CRONJOBS` to crontab (of the user which you are running this command with):
+finally, run this command to add all defined jobs from `CRONJOBS` to crontab (of the user which you are running this command with):
 
 .. code:: bash
 
@@ -69,7 +69,7 @@ show current active jobs of this project:
 
     python manage.py crontab show
 
-removing all defined jobs is straight forward:
+removing all defined jobs is straightforward:
 
 .. code:: bash
 
@@ -80,13 +80,13 @@ config
 there are a bunch of setting vars to customize behavior. each of them comes with default values that should properly fit. if not, feel free to overwrite.
 
 CRONJOBS
-  - list of jobs, each defined as tuple:
+  - list of jobs, each defined as a tuple:
 
     - format 1:
 
       1. required: cron timing in usual format (see `Wikipedia <http://en.wikipedia.org/wiki/Cron#Format>`_ and `crontab.guru <https://crontab.guru/examples.html>`_ for more examples)
       2. required: the python module path to the method
-      3. optional: a job specific suffix (f.e. to redirect out/err to a file, default: '')
+      3. optional: a job-specific suffix (f.e. to redirect out/err to a file, default: '')
 
     - format 2:
 
@@ -173,7 +173,7 @@ faq
 * **I'm getting "bad command"/"errors in cronfile" while installing via "crontab add". What's wrong?**
   - Maybe it's your cron time format, it can have 5 or 6 fields. Check that your system supports 6 or just define 5 in `CRONJOBS`. (see #23)
 * **Why does the LOGGING not work when started via cronjob?**
-  - That's maybe somehting about the current working dir. Please set your FileHandler's file path absolute and try again. (see `#31 </../../issues/31>`_)
+  - That's maybe something about the current working dir. Please set your FileHandler's file path absolute and try again. (see `#31 </../../issues/31>`_)
 
 license
 =======
