@@ -5,10 +5,12 @@ python:
   - "3.3"
   - "3.4"
   - "3.5"
+  - "3.6"
 env:
   - REQUIREMENTS="django>=1.8,<1.9"
   - REQUIREMENTS="django>=1.9,<1.10"
   - REQUIREMENTS="django>=1.10,<1.11"
+  - REQUIREMENTS="django>=1.11,<2.0"
   - REQUIREMENTS="https://github.com/django/django/archive/master.tar.gz"
 matrix:
   exclude:
@@ -22,6 +24,8 @@ matrix:
       env: REQUIREMENTS="django>=1.7,<1.8"
     - python: "3.5"
       env: REQUIREMENTS="django>=1.8,<1.9"
+    - python: "3.6"
+      env:  REQUIREMENTS="django>=1.11,<2.0"
   allow_failures:
     - env: REQUIREMENTS="https://github.com/django/django/archive/master.tar.gz"
 cache:
