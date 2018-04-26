@@ -19,8 +19,6 @@ matrix:
     - python: "2.7"
       env: REQUIREMENTS="https://github.com/django/django/archive/master.tar.gz"
     - python: "3.4"
-      env: REQUIREMENTS="django>=2.0,<2.1"
-    - python: "3.4"
       env: REQUIREMENTS="https://github.com/django/django/archive/master.tar.gz"
     - python: "3.5"
       env: REQUIREMENTS="django>=1.8,<1.9"
