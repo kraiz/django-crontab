@@ -2,8 +2,6 @@
     :target: https://travis-ci.org/kraiz/django-crontab
 .. image:: https://img.shields.io/coveralls/kraiz/django-crontab/master.svg
     :target: https://coveralls.io/r/kraiz/django-crontab
-.. image:: https://img.shields.io/pypi/dw/django-crontab.svg
-    :target: https://pypi.python.org/pypi/django-crontab
 .. image:: https://img.shields.io/pypi/v/django-crontab.svg
     :target: https://pypi.python.org/pypi/django-crontab
 .. image:: https://img.shields.io/pypi/pyversions/django-crontab.svg
@@ -14,7 +12,7 @@
 about
 =====
 
-dead simple crontab powered job scheduling for django (1.8+).
+dead simple crontab powered job scheduling for django (1.8-2.0).
 
 setup
 =====
