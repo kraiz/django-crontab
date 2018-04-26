@@ -30,7 +30,7 @@ matrix:
       env: REQUIREMENTS="django>=1.9,<1.10"
     - python: "3.6"
       env: REQUIREMENTS="django>=1.10,<1.11"
-   - python: "3.6"
+    - python: "3.6"
       env: REQUIREMENTS="django>=1.11,<2.0"
   allow_failures:
     - env: REQUIREMENTS="https://github.com/django/django/archive/master.tar.gz"
