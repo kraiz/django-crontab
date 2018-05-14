@@ -121,7 +121,7 @@ CRONTAB_EXECUTABLE
   - default: '/usr/bin/crontab'
 
 CRONTAB_DJANGO_PROJECT_NAME
-  - the name of your django project, used to build path path to manage.py and to mark the jobs in contrab via comment for later removing
+  - the name of your django project, used to build path path to manage.py and to mark the jobs in crontab via comment for later removing
   - default is read from DJANGO_SETTINGS_MODULE environment variable
 
 CRONTAB_DJANGO_MANAGE_PATH
