@@ -45,3 +45,7 @@ class Settings():
         self.COMMAND_SUFFIX = getattr(settings, 'CRONTAB_COMMAND_SUFFIX', '')
 
         self.LOCK_JOBS = getattr(settings, 'CRONTAB_LOCK_JOBS', False)
+        
+        # Sanitizes path 
+        self.PYTHON_EXECUTABLE = shlex.quote(self.PYTHON_EXECUTABLE)
+        self.DJANGO_MANAGE_PATH = shlex.quote(self.DJANGO_MANAGE_PATH)
