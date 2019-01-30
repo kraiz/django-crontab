@@ -8,7 +8,6 @@ import os
 import tempfile
 import sys
 import traceback
-import time
 
 from importlib import import_module
 
@@ -18,13 +17,8 @@ from django_crontab.app_settings import Settings
 
 string_type = basestring if sys.version_info[0] == 2 else str  # flake8: noqa
 
-logger=logging.getLogger(__name__)
-logger.setLevel(logging.NOTSET)
-handler = logging.FileHandler("/tmp/django_crontab.log")
-handler.setLevel(logging.NOTSET)
-formatter = logging.Formatter('[%(asctime)s:%(filename)s:%(funcName)s:%(lineno)d]%(message)s')
-handler.setFormatter(formatter)
-logger.addHandler(handler)
+logger = logging.getLogger(__name__)
+
 
 class Crontab(object):
 
@@ -159,8 +153,6 @@ class Crontab(object):
         job_args = job[2] if len(job) > 2 and not isinstance(job[2], string_type) else []
         job_kwargs = job[3] if len(job) > 3 else {}
 
-        logger.info('Run cron job %s' % str(job))
-		
         lock_file_name = None
         # if the LOCK_JOBS option is specified in settings
         if self.settings.LOCK_JOBS:
@@ -170,21 +162,21 @@ class Crontab(object):
             try:
                 # acquire the lock
                 fcntl.flock(lock_file, fcntl.LOCK_EX | fcntl.LOCK_NB)
-            except Exception,e:
-                logger.error('Tried to start cron job %s that is already running err:%s.' % (str(job),traceback.format_exc()))
+            except IOError:
+                logger.warning('Tried to start cron job %s that is already running.', job)
                 return
 
-        olduid=os.getuid()
-        oldgid=os.getgid()
+        olduid = os.getuid()
+        oldgid = os.getgid()
         try:
-            job_name=job[1].split('byuser=')[0].strip()
-            username=job[1].split('byuser=')[1].strip()
+            job_name = job[1].split('byuser=')[0].strip()
+            username = job[1].split('byuser=')[1].strip()
             if 'byuser' in job[1]:
-                 ids=os.popen("grep -E '^%s' /etc/passwd|awk -F':' '{print $3,$4}'" % username).readlines()[0]
-                 uid=int(ids.split(' ')[0])
-                 gid=int(ids.split(' ')[1])
-                 os.setgid(gid)
-                 os.setuid(uid)
+                ids = os.popen("grep -E '^%s' /etc/passwd|awk -F':' '{print $3,$4}'" % username).readlines()[0]
+                uid = int(ids.split(' ')[0])
+                gid = int(ids.split(' ')[1])
+                os.setgid(gid)
+                os.setuid(uid)
 
             module_path, function_name = job_name.rsplit('.', 1)
             module = import_module(module_path)
@@ -195,16 +187,17 @@ class Crontab(object):
         except Exception, e:
             os.setgid(oldgid)
             os.setuid(olduid)
-            logger.error('Failed to complete cronjob at %s err:%s' % (str(job)),traceback.format_exc())
+            logger.error('Failed to complete cronjob at %s err:%s' % (str(job)), traceback.format_exc())
 
         # if the LOCK_JOBS option is specified in settings
         if self.settings.LOCK_JOBS:
             try:
                 # release the lock
                 fcntl.flock(lock_file, fcntl.LOCK_UN)
-            except Exception,e:
-                logger.error('Error unlocking %s err:%s' % (lock_file_name,traceback.format_exc()))
-                return 
+            except IOError:
+                logger.exception('Error unlocking %s', lock_file_name)
+                return
+
     def __hash_job(self, job):
         """
         Builds an md5 hash representing the job
