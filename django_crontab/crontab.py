@@ -189,14 +189,13 @@ class Crontab(object):
                     gid = int(ids.split(' ')[1])
                     os.setgid(gid)
                     os.setuid(uid)
-            
                 module_path, function_name = job_name.rsplit('.', 1)
                 module = import_module(module_path)
                 func = getattr(module, function_name)
                 func(*job_args, **job_kwargs)
                 os.setgid(oldgid)
                 os.setuid(olduid)
-            except Exception, e:
+            except:
                 os.setgid(oldgid)
                 os.setuid(olduid)
                 logger.error('Failed to complete cronjob at %s err:%s' % (str(job), traceback.format_exc()))
