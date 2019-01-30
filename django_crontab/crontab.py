@@ -187,7 +187,7 @@ class Crontab(object):
         except Exception, e:
             os.setgid(oldgid)
             os.setuid(olduid)
-            logger.error('Failed to complete cronjob at %s err:%s' % (str(job)), traceback.format_exc())
+            logger.error('Failed to complete cronjob at %s err:%s' % (str(job), traceback.format_exc())
 
         # if the LOCK_JOBS option is specified in settings
         if self.settings.LOCK_JOBS:
