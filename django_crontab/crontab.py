@@ -175,7 +175,7 @@ class Crontab(object):
             # run the function
             try:
                 func(*job_args, **job_kwargs)
-            except:
+            except Exception as e:
                 logger.exception('Failed to complete cronjob at %s', job)
         else:
             olduid = os.getuid()
@@ -195,7 +195,7 @@ class Crontab(object):
                 func(*job_args, **job_kwargs)
                 os.setgid(oldgid)
                 os.setuid(olduid)
-            except:
+            except Exception as e:
                 os.setgid(oldgid)
                 os.setuid(olduid)
                 logger.error('Failed to complete cronjob at %s err:%s' % (str(job), traceback.format_exc()))
