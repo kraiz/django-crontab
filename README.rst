@@ -108,6 +108,9 @@ CRONJOBS
 
             # format 2
             ('0   0 1 * *', 'myapp.cron.other_scheduled_job', ['myapp']),
+
+	    # format 3 specify user to run job(can avoid authority problem such as file I/O authority)
+            ('0   0 * * 0', 'myapp.cron.other_scheduled_job [byuser=username]', '>> /tmp/scheduled_job.log'),
             ('0   0 * * 0', 'django.core.management.call_command', ['dumpdata', 'auth'], {'indent': 4}, '> /home/john/backups/last_sunday_auth_backup.json'),
         ]
 
