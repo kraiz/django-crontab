@@ -3,6 +3,8 @@ from __future__ import print_function
 from django.core.management.base import BaseCommand
 from django_crontab.crontab import Crontab
 
+import sys
+
 
 class Command(BaseCommand):
     """
@@ -32,7 +34,9 @@ class Command(BaseCommand):
             with Crontab(**options) as crontab:    # initialize a Crontab class with any specified options
                 crontab.remove_jobs()              # remove all jobs specified in settings from the crontab
         elif options['subcommand'] == 'run':       # run command
-            Crontab().run_job(options['jobhash'])  # run the job with the specified hash
+            result = Crontab().run_job(options['jobhash'])  # run the job with the specified hash
+            if not result:
+                sys.exit(1)
         else:
             # output the help string if the user entered something not specified above
             print(self.help)

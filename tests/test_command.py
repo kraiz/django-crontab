@@ -68,3 +68,12 @@ def test_help_command(show_mock, run_mock, remove_mock, add_mock):
     assert not run_mock.called
     assert not show_mock.called
 
+@patch.object(Crontab, 'add_jobs')
+@patch.object(Crontab, 'remove_jobs')
+@patch.object(Crontab, 'run_job', return_value=False)
+def test_run_command_with_error(run_mock, remove_mock, add_mock):
+    with assert_raises(SystemExit):
+        call_command('crontab', 'run', 'abc123')
+    assert not remove_mock.called
+    assert not add_mock.called
+    run_mock.assert_called_once_with('abc123')

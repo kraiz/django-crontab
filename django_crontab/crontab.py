@@ -14,7 +14,7 @@ from django.conf import settings
 
 from django_crontab.app_settings import Settings
 
-string_type = basestring if sys.version_info[0] == 2 else str  # flake8: noqa
+string_type = basestring if sys.version_info[0] == 2 else str  # noqa: F821
 
 logger = logging.getLogger(__name__)
 
@@ -163,7 +163,7 @@ class Crontab(object):
                 fcntl.flock(lock_file, fcntl.LOCK_EX | fcntl.LOCK_NB)
             except IOError:
                 logger.warning('Tried to start cron job %s that is already running.', job)
-                return
+                return False
 
         # parse the module and function names from the job
         module_path, function_name = job_name.rsplit('.', 1)
@@ -173,8 +173,9 @@ class Crontab(object):
         # run the function
         try:
             func(*job_args, **job_kwargs)
-        except:
+        except BaseException:
             logger.exception('Failed to complete cronjob at %s', job)
+            return False
 
         # if the LOCK_JOBS option is specified in settings
         if self.settings.LOCK_JOBS:
@@ -183,7 +184,9 @@ class Crontab(object):
                 fcntl.flock(lock_file, fcntl.LOCK_UN)
             except IOError:
                 logger.exception('Error unlocking %s', lock_file_name)
-                return
+                return False
+
+        return True
 
     def __hash_job(self, job):
         """
@@ -208,4 +211,3 @@ class Crontab(object):
             'No job with hash %s found. It seems the crontab is out of sync with your settings.CRONJOBS. '
             'Run "python manage.py crontab add" again to resolve this issue!' % job_hash
         )
-
