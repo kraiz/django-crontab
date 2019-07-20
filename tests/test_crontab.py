@@ -205,6 +205,14 @@ def test_run_args_only_format3_job(method_to_call):
     method_to_call.assert_called_with(1, 'two')
 
 
+@override_settings(CRONJOBS=[('*/1 * * * *', 'tests.cron.cron_job')])
+@patch('tests.cron.cron_job', side_effect=Exception('foo'))
+def test_job_exception(method_to_call):
+    crontab = Crontab()
+    assert not crontab.run_job('4f30993ab69a8c5763ce55f762ef0433')
+    method_to_call.assert_called_with()
+
+
 @override_settings(CRONJOBS=[('* * * * *', 'tests.test_crontab.recursive_job_for_lock_checking')], CRONTAB_LOCK_JOBS=True)
 def test_locked_job():
     crontab = Crontab()
