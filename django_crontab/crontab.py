@@ -173,7 +173,7 @@ class Crontab(object):
         # run the function
         try:
             func(*job_args, **job_kwargs)
-        except:
+        except BaseException:
             logger.exception('Failed to complete cronjob at %s', job)
             return False
 
@@ -211,4 +211,3 @@ class Crontab(object):
             'No job with hash %s found. It seems the crontab is out of sync with your settings.CRONJOBS. '
             'Run "python manage.py crontab add" again to resolve this issue!' % job_hash
         )
-

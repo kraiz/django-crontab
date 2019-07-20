@@ -5,6 +5,7 @@ from django_crontab.crontab import Crontab
 
 import sys
 
+
 class Command(BaseCommand):
     """
     Define the Django management commands add, show, remove and run
