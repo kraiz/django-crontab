@@ -169,7 +169,7 @@ def test_remove_job_but_keep_anything_else():
 @patch('tests.cron.cron_job')
 def test_run_no_arg_format1_job(method_to_call):
     crontab = Crontab()
-    crontab.run_job('4f30993ab69a8c5763ce55f762ef0433')
+    assert crontab.run_job('4f30993ab69a8c5763ce55f762ef0433')
     method_to_call.assert_called_with()
 
 
@@ -177,7 +177,7 @@ def test_run_no_arg_format1_job(method_to_call):
 @patch('tests.cron.cron_job')
 def test_run_no_arg_format1_job_with_suffix(method_to_call):
     crontab = Crontab()
-    crontab.run_job('53e6fe5b66bd870e396d574ba1503c33')
+    assert crontab.run_job('53e6fe5b66bd870e396d574ba1503c33')
     method_to_call.assert_called_with()
 
 
@@ -185,7 +185,7 @@ def test_run_no_arg_format1_job_with_suffix(method_to_call):
 @patch('tests.cron.cron_job')
 def test_run_args_only_format2_job(method_to_call):
     crontab = Crontab()
-    crontab.run_job('369f8418b0f8cf1fff78c547516aa8e0')
+    assert crontab.run_job('369f8418b0f8cf1fff78c547516aa8e0')
     method_to_call.assert_called_with(1, 'two')
 
 
@@ -193,22 +193,22 @@ def test_run_args_only_format2_job(method_to_call):
 @patch('tests.cron.cron_job')
 def test_run_format2_job(method_to_call):
     crontab = Crontab()
-    crontab.run_job('13e8169dffe273b8b0c5f8abe1b6f643')
+    assert crontab.run_job('13e8169dffe273b8b0c5f8abe1b6f643')
     method_to_call.assert_called_with(1, 'two', test=34, a='s2')
 
 
 @override_settings(CRONJOBS=[('*/1 * * * *', 'tests.cron.cron_job', [1, 'two'], dict(), 'some suffix')])
 @patch('tests.cron.cron_job')
-def test_run_args_only_format2_job(method_to_call):
+def test_run_args_only_format3_job(method_to_call):
     crontab = Crontab()
-    crontab.run_job('fefa68aed4ff509331ee6a5b62ea5e5c')
+    assert crontab.run_job('fefa68aed4ff509331ee6a5b62ea5e5c')
     method_to_call.assert_called_with(1, 'two')
 
 
 @override_settings(CRONJOBS=[('* * * * *', 'tests.test_crontab.recursive_job_for_lock_checking')], CRONTAB_LOCK_JOBS=True)
 def test_locked_job():
     crontab = Crontab()
-    crontab.run_job('4a8e5d03cf136a16c7d120c41efb602b')
+    assert crontab.run_job('4a8e5d03cf136a16c7d120c41efb602b')
 
 
 def recursive_job_for_lock_checking():
@@ -217,12 +217,12 @@ def recursive_job_for_lock_checking():
     else:
         recursive_job_for_lock_checking.called_already = True
         crontab = Crontab()
-        crontab.run_job('4a8e5d03cf136a16c7d120c41efb602b')
+        assert not crontab.run_job('4a8e5d03cf136a16c7d120c41efb602b')
 recursive_job_for_lock_checking.called_already = False
 
 
 @raises(RuntimeError)
 def test_job_not_found():
     crontab = Crontab()
-    crontab.run_job('4a8e5d03cf136a16c7d120c41efb602b')
+    assert not crontab.run_job('4a8e5d03cf136a16c7d120c41efb602b')
 

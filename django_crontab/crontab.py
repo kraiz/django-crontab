@@ -163,7 +163,7 @@ class Crontab(object):
                 fcntl.flock(lock_file, fcntl.LOCK_EX | fcntl.LOCK_NB)
             except IOError:
                 logger.warning('Tried to start cron job %s that is already running.', job)
-                return
+                return False
 
         # parse the module and function names from the job
         module_path, function_name = job_name.rsplit('.', 1)
@@ -175,6 +175,7 @@ class Crontab(object):
             func(*job_args, **job_kwargs)
         except:
             logger.exception('Failed to complete cronjob at %s', job)
+            return False
 
         # if the LOCK_JOBS option is specified in settings
         if self.settings.LOCK_JOBS:
@@ -183,7 +184,9 @@ class Crontab(object):
                 fcntl.flock(lock_file, fcntl.LOCK_UN)
             except IOError:
                 logger.exception('Error unlocking %s', lock_file_name)
-                return
+                return False
+
+        return True
 
     def __hash_job(self, job):
         """
