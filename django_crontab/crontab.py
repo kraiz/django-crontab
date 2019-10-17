@@ -116,9 +116,9 @@ class Crontab(object):
             if job and job[0][4] == self.settings.CRONTAB_COMMENT:
                 # output the job hash and details if the verbose option is specified
                 if self.verbosity >= 1:
+                    job_hash = job[0][2].split('crontab run')[1].split()[0]
                     print(u'%s -> %s' % (
-                        job[0][2].split()[4],
-                        self.__get_job_by_hash(job[0][2][job[0][2].find('crontab run') + 12:].split()[0])
+                        job_hash, self.__get_job_by_hash(job_hash)
                     ))
 
     def remove_jobs(self):
@@ -135,9 +135,9 @@ class Crontab(object):
                 self.crontab_lines.remove(line)
                 # output the action if the verbose option is specified
                 if self.verbosity >= 1:
+                    job_hash = job[0][2].split('crontab run')[1].split()[0]
                     print('removing cronjob: (%s) -> %s' % (
-                        job[0][2].split()[4],
-                        self.__get_job_by_hash(job[0][2][job[0][2].find('crontab run') + 12:].split()[0])
+                        job_hash, self.__get_job_by_hash(job_hash)
                     ))
 
     # noinspection PyBroadException
