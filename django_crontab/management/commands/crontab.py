@@ -14,7 +14,7 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument('subcommand', choices=['add', 'show', 'remove', 'run'])
-        parser.add_argument('jobhash', nargs='?')
+        parser.add_argument('jobhash', nargs='+')
 
     def handle(self, *args, **options):
         """
