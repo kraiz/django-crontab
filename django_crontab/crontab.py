@@ -14,7 +14,10 @@ from django.conf import settings
 
 from django_crontab.app_settings import Settings
 
-string_type = basestring if sys.version_info[0] == 2 else str  # flake8: noqa
+if sys.version_info[0] == 2:
+    string_type = basestring
+else:
+    string_type = str 
 
 logger = logging.getLogger(__name__)
 
