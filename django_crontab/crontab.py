@@ -7,7 +7,6 @@ import logging
 import os
 import tempfile
 import sys
-import traceback
 
 from importlib import import_module
 
@@ -176,7 +175,7 @@ class Crontab(object):
             try:
                 func(*job_args, **job_kwargs)
             except Exception as e:
-                logger.exception('Failed to complete cronjob at %s err:%s' % (str(job),str(e)))
+                logger.exception('Failed to complete cronjob at %s err:%s' % (str(job), str(e)))
         else:
             olduid = os.getuid()
             oldgid = os.getgid()
