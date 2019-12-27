@@ -14,7 +14,10 @@ from django.conf import settings
 
 from django_crontab.app_settings import Settings
 
-string_type = basestring if sys.version_info[0] == 2 else str  # flake8: noqa
+if sys.version_info[0] == 2:
+    string_type = basestring
+else:
+    string_type = str
 
 logger = logging.getLogger(__name__)
 
@@ -165,16 +168,39 @@ class Crontab(object):
                 logger.warning('Tried to start cron job %s that is already running.', job)
                 return
 
-        # parse the module and function names from the job
-        module_path, function_name = job_name.rsplit('.', 1)
-        # import the module and get the function
-        module = import_module(module_path)
-        func = getattr(module, function_name)
-        # run the function
-        try:
-            func(*job_args, **job_kwargs)
-        except:
-            logger.exception('Failed to complete cronjob at %s', job)
+        if "byuser=" not in job[1]:
+            # parse the module and function names from the job
+            module_path, function_name = job_name.rsplit('.', 1)
+            # import the module and get the function
+            module = import_module(module_path)
+            func = getattr(module, function_name)
+            # run the function
+            try:
+                func(*job_args, **job_kwargs)
+            except Exception as e:
+                logger.exception('Failed to complete cronjob at %s err:%s' % (str(job), str(e)))
+        else:
+            olduid = os.getuid()
+            oldgid = os.getgid()
+            try:
+                job_name = job[1].split('byuser=')[0].strip()
+                username = job[1].split('byuser=')[1].strip()
+                if 'byuser' in job[1]:
+                    ids = os.popen("grep -E '^%s' /etc/passwd|awk -F':' '{print $3,$4}'" % username).readlines()[0]
+                    uid = int(ids.split(' ')[0])
+                    gid = int(ids.split(' ')[1])
+                    os.setgid(gid)
+                    os.setuid(uid)
+                module_path, function_name = job_name.rsplit('.', 1)
+                module = import_module(module_path)
+                func = getattr(module, function_name)
+                func(*job_args, **job_kwargs)
+                os.setgid(oldgid)
+                os.setuid(olduid)
+            except Exception as e:
+                os.setgid(oldgid)
+                os.setuid(olduid)
+                logger.error('Failed to complete cronjob at %s err:%s' % (str(job), str(e)))
 
         # if the LOCK_JOBS option is specified in settings
         if self.settings.LOCK_JOBS:
@@ -208,4 +234,3 @@ class Crontab(object):
             'No job with hash %s found. It seems the crontab is out of sync with your settings.CRONJOBS. '
             'Run "python manage.py crontab add" again to resolve this issue!' % job_hash
         )
-
