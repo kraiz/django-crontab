@@ -17,7 +17,7 @@ from django_crontab.app_settings import Settings
 if sys.version_info[0] == 2:
     string_type = basestring
 else:
-    string_type = str 
+    string_type = str
 
 logger = logging.getLogger(__name__)
 
