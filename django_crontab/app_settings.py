@@ -41,7 +41,7 @@ class Settings():
 
         self.CRONTAB_COMMENT = getattr(settings, 'CRONTAB_COMMENT', 'django-cronjobs for %s' % self.DJANGO_PROJECT_NAME)
 
-        self.COMMAND_PREFIX = getattr(settings, 'CRONTAB_COMMAND_PREFIX', '')
+        self.COMMAND_PREFIX = getattr(settings, 'CRONTAB_COMMAND_PREFIX', 'cd '+ os.getcwd()+ ' &&')
         self.COMMAND_SUFFIX = getattr(settings, 'CRONTAB_COMMAND_SUFFIX', '')
 
         self.LOCK_JOBS = getattr(settings, 'CRONTAB_LOCK_JOBS', False)
