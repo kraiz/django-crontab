@@ -1,7 +1,5 @@
-.. image:: https://img.shields.io/travis/kraiz/django-crontab/master.svg
-    :target: https://travis-ci.org/kraiz/django-crontab
-.. image:: https://img.shields.io/coveralls/kraiz/django-crontab/master.svg
-    :target: https://coveralls.io/r/kraiz/django-crontab
+.. image:: https://img.shields.io/github/actions/workflow/status/kraiz/django-crontab/ci.yml
+    :target: https://github.com/kraiz/django-crontab/actions/workflows/ci.yml
 .. image:: https://img.shields.io/pypi/v/django-crontab.svg
     :target: https://pypi.python.org/pypi/django-crontab
 .. image:: https://img.shields.io/pypi/pyversions/django-crontab.svg
@@ -12,7 +10,12 @@
 about
 =====
 
-dead simple crontab powered job scheduling for django (1.8-2.0).
+dead simple crontab powered job scheduling for django (4.2 - 6.0) on python 3.10+.
+
+.. note::
+    This project has been unmaintained since 2018 and is looking for new
+    maintainers (see issue `#126 </../../issues/126>`_). Since 0.8.0 it is
+    compatible with Python 3.10 - 3.14 and Django 4.2 - 6.0 again.
 
 setup
 =====

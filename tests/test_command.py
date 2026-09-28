@@ -1,70 +1,59 @@
-from __future__ import print_function
+from unittest.mock import patch
 
-from mock import patch
-
-from nose.tools import assert_raises
-
-import django
-from django.core.management import call_command, CommandError
+from django.core.management import CommandError, call_command
+from django.test import SimpleTestCase
 
 from django_crontab.crontab import Crontab
 
 
-django.setup()
+class CrontabCommandTest(SimpleTestCase):
 
+    @patch.object(Crontab, 'add_jobs')
+    @patch.object(Crontab, 'remove_jobs')
+    @patch.object(Crontab, 'run_job')
+    def test_add_command(self, run_mock, remove_mock, add_mock):
+        call_command('crontab', 'add')
+        self.assertTrue(remove_mock.called)
+        self.assertTrue(add_mock.called)
+        self.assertFalse(run_mock.called)
 
-@patch.object(Crontab, 'add_jobs')
-@patch.object(Crontab, 'remove_jobs')
-@patch.object(Crontab, 'run_job')
-def test_add_command(run_mock, remove_mock, add_mock):
-    call_command('crontab', 'add')
-    assert remove_mock.called
-    assert add_mock.called
-    assert not run_mock.called
+    @patch.object(Crontab, 'add_jobs')
+    @patch.object(Crontab, 'remove_jobs')
+    @patch.object(Crontab, 'run_job')
+    def test_remove_command(self, run_mock, remove_mock, add_mock):
+        call_command('crontab', 'remove')
+        self.assertTrue(remove_mock.called)
+        self.assertFalse(add_mock.called)
+        self.assertFalse(run_mock.called)
 
+    @patch.object(Crontab, 'add_jobs')
+    @patch.object(Crontab, 'remove_jobs')
+    @patch.object(Crontab, 'run_job')
+    def test_run_command(self, run_mock, remove_mock, add_mock):
+        call_command('crontab', 'run', 'abc123')
+        self.assertFalse(remove_mock.called)
+        self.assertFalse(add_mock.called)
+        run_mock.assert_called_once_with('abc123')
 
-@patch.object(Crontab, 'add_jobs')
-@patch.object(Crontab, 'remove_jobs')
-@patch.object(Crontab, 'run_job')
-def test_remove_command(run_mock, remove_mock, add_mock):
-    print(add_mock)
-    call_command('crontab', 'remove')
-    assert remove_mock.called
-    assert not add_mock.called
-    assert not run_mock.called
+    @patch.object(Crontab, 'add_jobs')
+    @patch.object(Crontab, 'remove_jobs')
+    @patch.object(Crontab, 'run_job')
+    @patch.object(Crontab, 'show_jobs')
+    def test_show_command(self, show_mock, run_mock, remove_mock, add_mock):
+        call_command('crontab', 'show')
+        self.assertFalse(remove_mock.called)
+        self.assertFalse(add_mock.called)
+        self.assertFalse(run_mock.called)
+        self.assertTrue(show_mock.called)
 
-
-@patch.object(Crontab, 'add_jobs')
-@patch.object(Crontab, 'remove_jobs')
-@patch.object(Crontab, 'run_job')
-def test_run_command(run_mock, remove_mock, add_mock):
-    call_command('crontab', 'run', 'abc123')
-    assert not remove_mock.called
-    assert not add_mock.called
-    run_mock.assert_called_once_with('abc123')
-
-
-@patch.object(Crontab, 'add_jobs')
-@patch.object(Crontab, 'remove_jobs')
-@patch.object(Crontab, 'run_job')
-@patch.object(Crontab, 'show_jobs')
-def test_show_command(show_mock, run_mock, remove_mock, add_mock):
-    call_command('crontab', 'show')
-    assert not remove_mock.called
-    assert not add_mock.called
-    assert not run_mock.called
-    assert show_mock.called
-
-
-@patch.object(Crontab, 'add_jobs')
-@patch.object(Crontab, 'remove_jobs')
-@patch.object(Crontab, 'run_job')
-@patch.object(Crontab, 'show_jobs')
-def test_help_command(show_mock, run_mock, remove_mock, add_mock):
-    with assert_raises(CommandError) as ce:
-        call_command('crontab', help=True)
-    assert not remove_mock.called
-    assert not add_mock.called
-    assert not run_mock.called
-    assert not show_mock.called
-
+    @patch.object(Crontab, 'add_jobs')
+    @patch.object(Crontab, 'remove_jobs')
+    @patch.object(Crontab, 'run_job')
+    @patch.object(Crontab, 'show_jobs')
+    def test_help_command(self, show_mock, run_mock, remove_mock, add_mock):
+        with self.assertRaises(CommandError):
+            call_command('crontab', help=True)
+        self.assertFalse(remove_mock.called)
+        self.assertFalse(add_mock.called)
+        self.assertFalse(run_mock.called)
+        self.assertFalse(show_mock.called)

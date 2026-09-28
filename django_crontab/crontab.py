@@ -1,25 +1,20 @@
-from __future__ import print_function
-
 import fcntl
 import hashlib
 import json
 import logging
 import os
+import subprocess
 import tempfile
-import sys
-
 from importlib import import_module
 
 from django.conf import settings
 
 from django_crontab.app_settings import Settings
 
-string_type = basestring if sys.version_info[0] == 2 else str  # flake8: noqa
-
 logger = logging.getLogger(__name__)
 
 
-class Crontab(object):
+class Crontab:
 
     def __init__(self, **options):
         self.verbosity = int(options.get('verbosity', 1))
@@ -50,7 +45,12 @@ class Crontab(object):
         """
         Reads the crontab into internal buffer
         """
-        self.crontab_lines = os.popen('%s -l' % self.settings.CRONTAB_EXECUTABLE).readlines()
+        result = subprocess.run(
+            [self.settings.CRONTAB_EXECUTABLE, '-l'],
+            capture_output=True,
+            text=True,
+        )
+        self.crontab_lines = result.stdout.splitlines(keepends=True)
 
     def write(self):
         """
@@ -58,15 +58,16 @@ class Crontab(object):
         """
         # create a temporary file using mkstemp to avoid race conditions
         fd, path = tempfile.mkstemp()
-        # write all the lines in the internal buffer to the temporary file
-        tmp = os.fdopen(fd, 'w')
-        for line in self.crontab_lines:
-            tmp.write(line)
-        tmp.close()
-        # replace the contab with the temporary file
-        os.system('%s %s' % (self.settings.CRONTAB_EXECUTABLE, path))
-        # delete the temporary file
-        os.unlink(path)
+        try:
+            # write all the lines in the internal buffer to the temporary file
+            with os.fdopen(fd, 'w') as tmp:
+                for line in self.crontab_lines:
+                    tmp.write(line)
+            # replace the crontab with the temporary file
+            subprocess.run([self.settings.CRONTAB_EXECUTABLE, path])
+        finally:
+            # delete the temporary file
+            os.unlink(path)
 
     def add_jobs(self):
         """
@@ -75,7 +76,7 @@ class Crontab(object):
         # take all jobs specified in settings
         for job in self.settings.CRONJOBS:
             # differ format and find job's suffix
-            if len(job) > 2 and isinstance(job[2], string_type):
+            if len(job) > 2 and isinstance(job[2], str):
                 # format 1 job
                 job_suffix = job[2]
             elif len(job) > 4:
@@ -107,7 +108,7 @@ class Crontab(object):
         """
         Print the jobs from from crontab
         """
-        print(u'Currently active jobs in crontab:')
+        print('Currently active jobs in crontab:')
         # iterate through all the lines in the internal buffer
         for line in self.crontab_lines[:]:
             # check if the line describes a crontab job
@@ -116,7 +117,7 @@ class Crontab(object):
             if job and job[0][4] == self.settings.CRONTAB_COMMENT:
                 # output the job hash and details if the verbose option is specified
                 if self.verbosity >= 1:
-                    print(u'%s -> %s' % (
+                    print('%s -> %s' % (
                         job[0][2].split()[4],
                         self.__get_job_by_hash(job[0][2][job[0][2].find('crontab run') + 12:].split()[0])
                     ))
@@ -149,7 +150,7 @@ class Crontab(object):
         # obtain the job tuple from the hash
         job = self.__get_job_by_hash(job_hash)
         job_name = job[1]
-        job_args = job[2] if len(job) > 2 and not isinstance(job[2], string_type) else []
+        job_args = job[2] if len(job) > 2 and not isinstance(job[2], str) else []
         job_kwargs = job[3] if len(job) > 3 else {}
 
         lock_file_name = None
@@ -161,7 +162,7 @@ class Crontab(object):
             try:
                 # acquire the lock
                 fcntl.flock(lock_file, fcntl.LOCK_EX | fcntl.LOCK_NB)
-            except IOError:
+            except OSError:
                 logger.warning('Tried to start cron job %s that is already running.', job)
                 return
 
@@ -173,7 +174,7 @@ class Crontab(object):
         # run the function
         try:
             func(*job_args, **job_kwargs)
-        except:
+        except Exception:
             logger.exception('Failed to complete cronjob at %s', job)
 
         # if the LOCK_JOBS option is specified in settings
@@ -181,7 +182,7 @@ class Crontab(object):
             try:
                 # release the lock
                 fcntl.flock(lock_file, fcntl.LOCK_UN)
-            except IOError:
+            except OSError:
                 logger.exception('Error unlocking %s', lock_file_name)
                 return
 

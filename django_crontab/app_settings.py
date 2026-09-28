@@ -1,13 +1,10 @@
-from __future__ import print_function
-
 import os
 import re
 import sys
-
 from importlib import import_module
 
 
-class Settings():
+class Settings:
     def __init__(self, settings):
         self.CRONJOBS = getattr(settings, 'CRONJOBS', [])
 
@@ -22,7 +19,7 @@ class Settings():
         self.DJANGO_SETTINGS_MODULE = getattr(settings, 'CRONTAB_DJANGO_SETTINGS_MODULE', None)
 
         if hasattr(settings, 'CRONTAB_DJANGO_MANAGE_PATH'):
-            self. DJANGO_MANAGE_PATH = settings.CRONTAB_DJANGO_MANAGE_PATH
+            self.DJANGO_MANAGE_PATH = settings.CRONTAB_DJANGO_MANAGE_PATH
             # check if it's really there
             if not os.path.exists(self.DJANGO_MANAGE_PATH):
                 print('ERROR: No manage.py file found at "%s". Check settings.CRONTAB_DJANGO_MANAGE_PATH!' % self.DJANGO_MANAGE_PATH)

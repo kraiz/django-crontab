@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "django-crontab"
+version = "0.8.0"
+description = "dead simple crontab powered job scheduling for django"
+readme = "README.rst"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Lars Kreisz", email = "lars.kreisz@gmail.com" }]
+requires-python = ">=3.10"
+dependencies = ["Django>=4.2"]
+keywords = ["django", "crontab", "cron", "jobs", "scheduling"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Web Environment",
+    "Framework :: Django",
+    "Framework :: Django :: 4.2",
+    "Framework :: Django :: 5.2",
+    "Framework :: Django :: 6.0",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "Operating System :: POSIX",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: System :: Installation/Setup",
+]
+
+[project.urls]
+Homepage = "https://github.com/kraiz/django-crontab"
+Changelog = "https://github.com/kraiz/django-crontab/blob/master/CHANGELOG"
+Issues = "https://github.com/kraiz/django-crontab/issues"
+
+[tool.setuptools.packages.find]
+include = ["django_crontab*"]
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I", "UP024", "UP004", "UP039"]

@@ -1,3 +1,11 @@
+0.8.0 (unreleased)
+------------------
+* restored compatibility with recent Python (3.10 - 3.14) and Django (4.2 - 6.0)
+* modernized packaging: pyproject.toml replaces setup.py, requires Python >= 3.10 and Django >= 4.2
+* replaced the unmaintained nose-based test suite with unittest + Django DiscoverRunner (runtests.py)
+* use subprocess instead of os.popen/os.system (paths with spaces are safe now, temp file is cleaned up on failure)
+* added GitHub Actions CI matrix (python x django)
+
 0.7.1
 -----
 * bugfix: allow project path to contain "run" #30 (thx vinsia)

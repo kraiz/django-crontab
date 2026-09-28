@@ -1,4 +1,6 @@
 # Django settings for test_project project.
+import os
+
 DEBUG = True
 
 INSTALLED_APPS = (
@@ -33,5 +35,4 @@ LOGGING = {
     }
 }
 
-import os
 CRONTAB_DJANGO_MANAGE_PATH = os.path.join(os.path.dirname(__file__), '', 'test_manage.py')

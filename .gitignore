@@ -1,3 +1,6 @@
 *.pyc
 .idea
 .coverage
+__pycache__/
+*.egg-info/
+.venv*/
